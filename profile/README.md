@@ -25,6 +25,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are changes that are planned. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Bolt Templates` on the website with 2 more free website templates.
 - Updated documentation of `LocalSiteMap`.
 - Updated `LocalSiteMap` to `v2.0.0` following major bug fixes, performance improvements, and new features. It can also now include custom files, not just `.htm` or `.html`.
 - Updated `Python Projects` with 1 new intermediate project and 2 beginner projects. Also added an installation guide for Python & VSCode and a new file explorer project by @Ericwasepic127.
