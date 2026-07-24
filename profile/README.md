@@ -9,6 +9,8 @@
 [![Static Badge](https://img.shields.io/badge/Huggingface-Visit-white?logo=huggingface&labelColor=white)](https://huggingface.co/InfinitodeLTD)
 ![](https://komarev.com/ghpvc/?username=infinitode&color=5d17eb)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4J423SRBM)
+
 Welcome to Infinitode, a cutting-edge small technology company dedicated to developing innovative solutions for the future of artificial intelligence, web development, and data science.
 
 ## Changes
