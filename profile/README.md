@@ -25,6 +25,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are changes that are planned. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Added `Orb Studio` to the `Experiments`. Orb Studio is an interactive liquid audio visualizer with full customizability, running locally in the browser.
 - Updated `Bolt Templates` on the website with 2 more free website templates.
 - Updated documentation of `LocalSiteMap`.
 - Updated `LocalSiteMap` to `v2.0.0` following major bug fixes, performance improvements, and new features. It can also now include custom files, not just `.htm` or `.html`.
