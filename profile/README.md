@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are changes that are planned. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Fixed the broken `404` page on the website.
 - Added `Typesite Lab` to the website to test font pairings on a live site! View the experiment here: https://infinitode.netlify.app/experiments/typesite-lab.
 - Updated the website with new sections, links, and more.
 - Added `Orb Studio` to the `Experiments`. Orb Studio is an interactive liquid audio visualizer with full customizability, running locally in the browser.
