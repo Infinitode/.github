@@ -27,6 +27,8 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are changes that are planned. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated the `BlurJS` documentation on GitBook.
+- Updated `BlurJS` to `v1.7`, including dynamic `/blur` detection and more animation and interaction support.
 - Updated most repositories with Sponsor buttons to help support our team.
 - Fixed the broken `404` page on the website.
 - Added `Typesite Lab` to the website to test font pairings on a live site! View the experiment here: https://infinitode.netlify.app/experiments/typesite-lab.
