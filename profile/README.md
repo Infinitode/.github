@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are changes that are planned. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated the website: fixed a bug in `pricing`, and added a new blog post about the new experiments and templates.
 - Updated the `BlurJS` documentation on GitBook.
 - Updated `BlurJS` to `v1.7`, including dynamic `/blur` detection and more animation and interaction support.
 - Updated most repositories with Sponsor buttons to help support our team.
