@@ -24,9 +24,10 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 - New `3D assets`, `samples`, and `models` on our website or via a dedicated app.
 
 > [!NOTE]
-> Upcoming changes are changes that are planned. These changes can be removed, canceled, or staged for a later date.
+> Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Added `Brand Lab` to the website. A full web experiment for complete brand testing, using random logos, colors, fonts, and more.
 - Updated the website: fixed a bug in `pricing`, and added a new blog post about the new experiments and templates.
 - Updated the `BlurJS` documentation on GitBook.
 - Updated `BlurJS` to `v1.7`, including dynamic `/blur` detection and more animation and interaction support.
