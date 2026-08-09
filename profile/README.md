@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Bolt Templates` with 2 new templates.
 - Created 2 new `Bolt Templates` for the website.
 - Updated `Python Projects`.
 - Added `Brand Lab` to the website. A full web experiment for complete brand testing, using random logos, colors, fonts, and more.
