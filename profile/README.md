@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Added a new `Bolt Template` for mobile to the website.
 - Updated the website `Experiments`, `Apps`, and `Bolt Templates` pages with new donation cards.
 - Moved the `Material Library` from the website to an open-source repository on GitHub for easier access. It is still available on the website, but the download links now redirect to GitHub.
 - Updated `Bolt Templates` with 2 new templates.
