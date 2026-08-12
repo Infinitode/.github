@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated and improved `OPEN-ARC's` website with a completely new UI and even more project detail views.
 - Updated `OPEN-ARC` with a new project.
 - Added a new `Bolt Template` for mobile to the website.
 - Updated the website `Experiments`, `Apps`, and `Bolt Templates` pages with new donation cards.
