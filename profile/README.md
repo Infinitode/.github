@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `LocalShare` to fix file chunking and sending.
 - Fixed and updated `LocalShare` with new updates, including better chunking and file verification to catch corrupted files.
 - Fixed ugly buttons on the website, updated the hero sections, and added 3 new `Bolt Templates` to the website.
 - Updated `Kode Magazine` with new articles and news. View the magazine at: https://kode-magazine.netlify.app.
