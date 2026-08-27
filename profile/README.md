@@ -26,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Closed issue #12 in `Python Projects`. Reviewed and closed a pull request relating to the issue.
 - Updated `Bolt Templates` with 2 new templates.
 - Improved some layouts on the website and updated all OpenAPI pages on the website with new layouts.
 - Updated the documentation pages on GitBook.
