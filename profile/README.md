@@ -14,7 +14,6 @@
 Welcome to Infinitode, a cutting-edge small technology company dedicated to developing innovative solutions for the future of artificial intelligence, web development, and data science.
 
 ## Changes
-
 ### Upcoming changes
 
 - Updates to all outdated packages.
@@ -27,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Bolt Templates` with 2 new templates.
 - Improved some layouts on the website and updated all OpenAPI pages on the website with new layouts.
 - Updated the documentation pages on GitBook.
 - Updated `LocalShare` to fix file chunking and sending.
