@@ -26,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Python Projects` and merged changes from [#15](https://github.com/Infinitode/Python-Projects/pull/15/).
 - Updated all repositories to have sponsor links and Ko-Fi links.
 - Closed issue #12 in `Python Projects`. Reviewed and closed a pull request relating to the issue.
 - Updated `Bolt Templates` with 2 new templates.
