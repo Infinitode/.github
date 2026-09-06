@@ -26,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated [`Kode Magazine`](https://kode-magazine.netlify.app/) with new articles and included new news.
 - Updated `Python Projects` and merged changes from [#15](https://github.com/Infinitode/Python-Projects/pull/15/).
 - Updated all repositories to have sponsor links and Ko-Fi links.
 - Closed issue #12 in `Python Projects`. Reviewed and closed a pull request relating to the issue.
@@ -45,7 +46,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 - Created 2 new `Bolt Templates` for the website.
 - Updated `Python Projects`.
 - Added `Brand Lab` to the website. A full web experiment for complete brand testing, using random logos, colors, fonts, and more.
-- Updated the website: fixed a bug in `pricing`, and added a new blog post about the new experiments and templates.
+- Updated the website: fixed a bug in `pricing` and added a new blog post about the new experiments and templates.
 - Updated the `BlurJS` documentation on GitBook.
 - Updated `BlurJS` to `v1.7`, including dynamic `/blur` detection and more animation and interaction support.
 - Updated most repositories with Sponsor buttons to help support our team.
@@ -66,7 +67,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 - Updated `Kode Magazine` with new articles and news posts.
 - Updated the website with a new blog post on KeySynth Studio! KeySynth Studio will be on sale from the 24th of June 2026 to the 6th of July 2026.
 - Released `KeySynth Studio`! KeySynth Studio is a premium piano Synthesia MIDI visualizer built for all creators. View it on our official itch.io page: https://infinitode.itch.io/, or view it directly: https://infinitode.itch.io/keysynth-studio.
-- Updated `LocalShare` with: new UI, staggered backoff for discovery mode, and bugfixes to avoid ID collisions.
+- Updated `LocalShare` with: new UI, staggered backoff for discovery mode, and bug fixes to avoid ID collisions.
 - Updated `Python Projects` with 3 new beginner projects and solutions.
 - We launched `Kode Magazine`! A tech and AI magazine with weekly updates: https://kode-magazine.netlify.app.
 - We have released `Bioset CCCM (Chest Cancer Classification Model)`: View and use on [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Bioset-CCCM), or use [locally](https://infinitode.netlify.app/experiments/bioset-cccm/).
