@@ -26,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Bolt Templates` with another new desktop template.
 - Updated the website with a new template on `Bolt Templates` and added a blog post about the changes to `OPEN-ARC`.
 - Updated `OPEN-ARC` with new projects for basic data exploration and manipulation.
 - Updated [`Kode Magazine`](https://kode-magazine.netlify.app/) with new articles and included new news.
