@@ -26,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `CodeSafe's documentation` to reflect recent changes.
 - Fixed a critical security vulnerability in `CodeSafe v0.0.1-0.0.4` that can be used to bypass the sandbox environment and allow arbitrary code execution. Upgrade to newer versions of `CodeSafe (v0.0.5)` or later. A huge thanks to [@hkmj19](https://github.com/hkmj19)/[Linkedin](https://www.linkedin.com/in/hemanth-kumar-mj-24b50a256/) for finding and reporting this vulnerability.
 - Updated `Bolt Templates` with another new desktop template.
 - Updated the website with a new template on `Bolt Templates` and added a blog post about the changes to `OPEN-ARC`.
