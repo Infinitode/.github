@@ -26,6 +26,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Python Projects` with 6 new projects.
 - Updated the website with a new blog post about `CodeSafe` and added 2 new `Bolt Templates` to the website.
 - Fixed `CodeSafe` README.
 - Updated `CodeSafe's documentation` to reflect recent changes.
