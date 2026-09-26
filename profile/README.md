@@ -16,7 +16,6 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
-- A huge website redesign and update.
 - Updates to KeySynth Studio to improve performance and usability, adding new features as well.
 - Updates to all outdated packages.
 - New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
@@ -28,6 +27,8 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated the website with a huge website redesign and added built-in multi-language support.
+- Added 2 new `Bolt Templates`.
 - Updated `Python Projects` with 6 new projects.
 - Updated the website with a new blog post about `CodeSafe` and added 2 new `Bolt Templates` to the website.
 - Fixed `CodeSafe` README.
