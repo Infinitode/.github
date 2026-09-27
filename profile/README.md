@@ -27,6 +27,8 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated the `website` with improved renders.
+- Updated the `OPEN-ARC` website to look much cleaner. View it here: https://open-arc.netlify.app/.
 - Updated the website with a huge website redesign and added built-in multi-language support.
 - Added 2 new `Bolt Templates`.
 - Updated `Python Projects` with 6 new projects.
