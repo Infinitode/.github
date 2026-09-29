@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `LocalShare` with enhancements in transfer speed, connection stability, and a UI overhaul. Also improved security.
 - Updated `PyWebScrapr` to `v0.1.7` to improve performance by speeding up similarity detection in text.
 - Updated the `website` with improved renders.
 - Updated the `OPEN-ARC` website to look much cleaner. View it here: https://open-arc.netlify.app/.
