@@ -16,7 +16,6 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
-- Updates for `NotionGrid`, our infinite note-taking and planning app, including new AI features.
 - Updates to KeySynth Studio to improve performance and usability, adding new features as well.
 - Updates to all outdated packages.
 - New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
@@ -28,11 +27,12 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Huge updates for `NotionGrid`, our infinite note-taking and planning app, including new AI features.
 - Updated `LocalShare` with enhancements in transfer speed, connection stability, and a UI overhaul. Also improved security.
 - Updated `PyWebScrapr` to `v0.1.7` to improve performance by speeding up similarity detection in text.
 - Updated the `website` with improved renders.
 - Updated the `OPEN-ARC` website to look much cleaner. View it here: https://open-arc.netlify.app/.
-- Updated the website with a huge website redesign and added built-in multi-language support.
+- Updated the website with a huge website redesign and added built-in multilingual support.
 - Added 2 new `Bolt Templates`.
 - Updated `Python Projects` with 6 new projects.
 - Updated the website with a new blog post about `CodeSafe` and added 2 new `Bolt Templates` to the website.
