@@ -27,13 +27,14 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `PyWebScrapr` to `v0.1.7` to improve performance by speeding up similarity detection in text.
 - Updated the `website` with improved renders.
 - Updated the `OPEN-ARC` website to look much cleaner. View it here: https://open-arc.netlify.app/.
 - Updated the website with a huge website redesign and added built-in multi-language support.
 - Added 2 new `Bolt Templates`.
 - Updated `Python Projects` with 6 new projects.
 - Updated the website with a new blog post about `CodeSafe` and added 2 new `Bolt Templates` to the website.
-- Fixed `CodeSafe` README.
+- Fixed the `CodeSafe` README.
 - Updated `CodeSafe's documentation` to reflect recent changes.
 - Fixed a critical security vulnerability in `CodeSafe v0.0.1-0.0.4` that can be used to bypass the sandbox environment and allow arbitrary code execution. Upgrade to newer versions of `CodeSafe (v0.0.5)` or later. A huge thanks to [@hkmj19](https://github.com/hkmj19)/[Linkedin](https://www.linkedin.com/in/hemanth-kumar-mj-24b50a256/) for finding and reporting this vulnerability.
 - Updated `Bolt Templates` with another new desktop template.
