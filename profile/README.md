@@ -16,6 +16,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
+- Updates for `NotionGrid`, our infinite note-taking and planning app, including new AI features.
 - Updates to KeySynth Studio to improve performance and usability, adding new features as well.
 - Updates to all outdated packages.
 - New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
