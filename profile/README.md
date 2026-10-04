@@ -16,7 +16,6 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
-- Updates to `Scriptify`, including UI overhauls and user experience improvements.
 - Updates to KeySynth Studio to improve performance and usability, adding new features as well.
 - Updates to all outdated packages.
 - New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
@@ -28,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated `Scriptify` with new improvements and major file size reductions.
 - Huge updates for `NotionGrid`, our infinite note-taking and planning app, including new AI features.
 - Updated `LocalShare` with enhancements in transfer speed, connection stability, and a UI overhaul. Also improved security.
 - Updated `PyWebScrapr` to `v0.1.7` to improve performance by speeding up similarity detection in text.
