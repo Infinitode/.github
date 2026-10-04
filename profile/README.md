@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Updated the website with 2 new `Bolt Templates`, a new blog post about `Scriptify`, and updated Scriptify's app page.
 - Updated `Scriptify` with new improvements and major file size reductions.
 - Huge updates for `NotionGrid`, our infinite note-taking and planning app, including new AI features.
 - Updated `LocalShare` with enhancements in transfer speed, connection stability, and a UI overhaul. Also improved security.
