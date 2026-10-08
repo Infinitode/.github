@@ -27,6 +27,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
 
 ### Latest changes
+- Added 2 new `Bolt Templates` to the website.
 - Fixed compatibility between `qrforge` and earlier releases of Python (3.8-3.11).
 - Updated the documentation to include `qrforge`.
 - Released `qrforge`, a Python library for customizing and creating QR codes easily.
