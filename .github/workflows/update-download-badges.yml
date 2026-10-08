@@ -1,0 +1,57 @@
+name: Update total downloads badge
+
+# Sums all-time PyPI downloads (pepy) and jsDelivr hits, then rewrites the
+# TOTAL-DOWNLOADS badge block in profile/README.md.
+#
+# Optional: add a repo secret named PEPY_API_KEY (free key from
+# https://pepy.tech -> account -> API key) for the reliable pepy v2 endpoint.
+# Without it the job falls back to the keyless legacy endpoint.
+
+on:
+  schedule:
+    - cron: "17 4 * * *" # 04:17 UTC daily
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/update-download-badges.py"
+      - ".github/workflows/update-download-badges.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: download-badges
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run the badge tests
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+
+      - name: Tally downloads and rewrite the badge
+        env:
+          PEPY_API_KEY: ${{ secrets.PEPY_API_KEY }}
+        run: python3 scripts/update-download-badges.py --readme profile/README.md
+
+      - name: Commit the updated badge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add profile/README.md
+          if git diff --cached --quiet; then
+            echo "Total downloads unchanged; nothing to commit."
+          else
+            git commit -m "chore: update total downloads badge [skip ci]"
+            git push
+          fi
