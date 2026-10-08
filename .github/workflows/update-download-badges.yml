@@ -11,6 +11,10 @@ on:
   schedule:
     - cron: "17 4 * * *" # 04:17 UTC daily
   workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/update-download-badges.yml"
   push:
     branches: [main]
     paths:
@@ -39,12 +43,15 @@ jobs:
       - name: Run the badge tests
         run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
 
+      # Pull requests only run the tests above; the badge is rewritten on main.
       - name: Tally downloads and rewrite the badge
+        if: github.event_name != 'pull_request'
         env:
           PEPY_API_KEY: ${{ secrets.PEPY_API_KEY }}
         run: python3 scripts/update-download-badges.py --readme profile/README.md
 
       - name: Commit the updated badge
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
