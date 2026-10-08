@@ -1,11 +1,21 @@
 name: Update total downloads badge
 
-# Sums all-time PyPI downloads (pepy) and jsDelivr hits, then rewrites the
-# TOTAL-DOWNLOADS badge block in profile/README.md.
+# Tallies PyPI + jsDelivr downloads and rewrites the TOTAL-DOWNLOADS badge
+# block in profile/README.md.
 #
-# Optional: add a repo secret named PEPY_API_KEY (free key from
-# https://pepy.tech -> account -> API key) for the reliable pepy v2 endpoint.
-# Without it the job falls back to the keyless legacy endpoint.
+# Data sources (see scripts/update-download-badges.py for details):
+#   PyPI     - pepy v2 API when PEPY_API_KEY is set (exact counts), otherwise
+#              the shields.io /pepy/dt badge (no key, rounded figures).
+#   jsDelivr - shields.io /jsdelivr/gh/hy badge = hits over the last 12 months.
+#              jsDelivr publishes period stats only; there is no all-time figure.
+#
+# Optional but recommended: add a repository secret named PEPY_API_KEY
+# (free key: pepy.tech -> sign in -> API key). Without it the job still runs,
+# using the rounded shields.io figures instead.
+#
+# Safety: a failed fetch never overwrites the badge. The job only writes when
+# at least one source returned a number, and never publishes a total more than
+# 5% below the figure already shown.
 
 on:
   schedule:
@@ -48,7 +58,11 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           PEPY_API_KEY: ${{ secrets.PEPY_API_KEY }}
-        run: python3 scripts/update-download-badges.py --readme profile/README.md
+        run: |
+          if [ -z "$PEPY_API_KEY" ]; then
+            echo "::warning::PEPY_API_KEY is not set; PyPI counts will be rounded shields.io figures."
+          fi
+          python3 scripts/update-download-badges.py --readme profile/README.md
 
       - name: Commit the updated badge
         if: github.event_name != 'pull_request'
