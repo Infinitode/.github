@@ -309,6 +309,37 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 
 [![GitHub stars](https://img.shields.io/github/stars/infinitode/python-projects.svg?style=social&label=Star)](https://github.com/infinitode/python-projects/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/python-projects) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/python-projects)
 
+[**Scriptify**](https://github.com/Infinitode/Scriptify)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/scriptify.svg?style=social&label=Star)](https://github.com/infinitode/scriptify/stargazers) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/infinitode/scriptify/build.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/scriptify) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/scriptify)
+
+[**Scikit-learn Model Updater**](https://github.com/Infinitode/Scikit-learn-Model-Updater)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/scikit-learn-model-updater.svg?style=social&label=Star)](https://github.com/infinitode/scikit-learn-model-updater/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/scikit-learn-model-updater) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/scikit-learn-model-updater)
+
+[**Distributables**](https://github.com/Infinitode/Distributables)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/distributables.svg?style=social&label=Star)](https://github.com/infinitode/distributables/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/distributables) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/distributables)
+
+[**Material Library**](https://github.com/Infinitode/Material-Library)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/material-library.svg?style=social&label=Star)](https://github.com/infinitode/material-library/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/material-library) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/material-library)
+
+[**PWLDS**](https://github.com/Infinitode/PWLDS)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/pwlds.svg?style=social&label=Star)](https://github.com/infinitode/pwlds/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/pwlds) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/pwlds)
+
+[**CRSD**](https://github.com/Infinitode/CRSD)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/crsd.svg?style=social&label=Star)](https://github.com/infinitode/crsd/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/crsd) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/crsd)
+
+[**qrforge**](https://github.com/Infinitode/qrforge)
+
+![Pepy Total Downloads](https://img.shields.io/pepy/dt/qrforge)
+ ![PyPI - Downloads](https://img.shields.io/pypi/dm/qrforge)
+ ![PyPI Version](https://img.shields.io/pypi/v/qrforge) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/infinitode/qrforge/build_and_publish.yaml)
+ [![qrforge](https://snyk.io/advisor/python/qrforge/badge.svg)](https://snyk.io/advisor/python/qrforge) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/pypi/qrforge) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/qrforge) ![PyPI - Status](https://img.shields.io/pypi/status/qrforge) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/qrforge)
+
 [**LocalSiteMap**](https://github.com/Infinitode/localsitemap)
 
 ![Pepy Total Downloads](https://img.shields.io/pepy/dt/localsitemap)
@@ -386,6 +417,7 @@ At Infinitode, we're passionate about creating open-source tools and platforms t
 We're proud to showcase some of our current projects:
 
 * **OPEN-ARC**: An open-source AI research project, containing base models, notebook implementations, and a community leaderboard.
+* **qrforge**: An open-source Python library for generating and art-directing QR codes, with custom module shapes, gradients, shaders, logos, image textures, backgrounds, and shadows, exporting to PNG, SVG, PDF, terminal ANSI, ASCII, or Pillow.
 * **ValX**: An open-source Python package for text cleaning tasks, including profanity detection and removal, and sensitive information detection and removal.
 * **Hued**: An open-source Python library for color processing, random color generation, conversion between common types, and retrieval of common color properties, color palettes, and color information.
 * **DeepDefend**: An open-source Python library for adversarial attacks and defenses in deep learning models, enhancing the security and robustness of AI systems.
