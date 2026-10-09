@@ -300,20 +300,20 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ![Static Badge](https://img.shields.io/badge/API-Maintenance%20Complete-green)
 ![Static Badge](https://img.shields.io/badge/Main%20Server-Online-green)
 
-[**OPEN-ARC**](https://github.com/Infinitode/OPEN-ARC)
-
-[![GitHub stars](https://img.shields.io/github/stars/infinitode/open-arc.svg?style=social&label=Star)](https://github.com/infinitode/open-arc/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/open-arc) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/open-arc)
-
 [**LocalShare**](https://github.com/johanbeytell1/LocalShare)
 
 [![GitHub stars](https://img.shields.io/github/stars/johanbeytell1/localshare.svg?style=social&label=Star)](https://github.com/johanbeytell1/localshare/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/johanbeytell1/localshare) ![GitHub last commit](https://img.shields.io/github/last-commit/johanbeytell1/localshare)
 
-> [!NOTE]
-> Hosted under [@johanbeytell1](https://github.com/johanbeytell1) instead of the org due to Netlify's limitations with organization accounts. Still fully open-source.
-
 [**Alloy**](https://github.com/johanbeytell1/Alloy)
 
 [![GitHub stars](https://img.shields.io/github/stars/johanbeytell1/alloy.svg?style=social&label=Star)](https://github.com/johanbeytell1/alloy/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/johanbeytell1/alloy) ![GitHub last commit](https://img.shields.io/github/last-commit/johanbeytell1/alloy)
+
+> [!NOTE]
+> Hosted under [@johanbeytell1](https://github.com/johanbeytell1) instead of the org due to Netlify's limitations with organization accounts. Still fully open-source.
+
+[**OPEN-ARC**](https://github.com/Infinitode/OPEN-ARC)
+
+[![GitHub stars](https://img.shields.io/github/stars/infinitode/open-arc.svg?style=social&label=Star)](https://github.com/infinitode/open-arc/stargazers) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/infinitode/open-arc) ![GitHub last commit](https://img.shields.io/github/last-commit/infinitode/open-arc)
 
 [**Python Projects**](https://github.com/Infinitode/python-projects)
 
