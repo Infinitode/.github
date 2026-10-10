@@ -27,9 +27,10 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 - New `3D assets`, `samples`, and `models` on our website or via a dedicated app.
 
 > [!NOTE]
-> Upcoming changes are planned changes. These changes can be removed, canceled, or staged for a later date.
+> Upcoming changes are planned changes. We can remove, cancel, or stage these changes for a later date.
 
 ### Latest changes
+- Updated `Python Projects` with new projects.
 - Added 2 new `Bolt Templates` to the website.
 - Fixed compatibility between `qrforge` and earlier releases of Python (3.8-3.11).
 - Updated the documentation to include `qrforge`.
