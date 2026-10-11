@@ -3,7 +3,7 @@
 
 The network layer is replaced with a router that answers with payloads shaped
 like the real GitHub, PyPI, pepy and shields.io responses. Everything else --
-repo discovery and ownership checks, counting, clone merging, badge parsing,
+repo discovery and ownership checks, counting, badge parsing,
 the regression guards and the README rewrite -- is production code.
 
 Run with:  python3 -m unittest discover -s scripts -p 'test_*.py' -v
@@ -29,7 +29,7 @@ _spec = importlib.util.spec_from_file_location("udb", os.path.join(_HERE, "updat
 udb = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(udb)
 
-TOKEN_VARS = ("PEPY_API_KEY", "GITHUB_TOKEN", "TRAFFIC_TOKEN")
+TOKEN_VARS = ("PEPY_API_KEY", "GITHUB_TOKEN")
 
 
 def shields_svg(label, value):
@@ -239,32 +239,11 @@ class TestParsers(unittest.TestCase):
         self.assertEqual(udb.packaging_names("setup.cfg", "[metadata]\nname = valx\n"), {"valx"})
 
 
-class TestClones(unittest.TestCase):
-    def test_days_are_overwritten_not_added(self):
-        history = {"repos": {}}
-        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 3, "2026-10-11": 1})
-        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 5, "2026-10-11": 1})
-        self.assertEqual(udb.history_total(history), 6)
-
-    def test_zero_days_are_dropped_and_empty_repos_removed(self):
-        history = {"repos": {}}
-        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 2})
-        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 0})
-        self.assertEqual(history, {"repos": {}})
-
-    def test_totals_accumulate_across_repos(self):
-        history = {"repos": {}}
-        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 4})
-        udb.merge_clones(history, "johanbeytell1/Alloy", {"2026-10-09": 1})
-        self.assertEqual(udb.history_total(history), 5)
-
-
 class TestReadmeRewrite(unittest.TestCase):
     def setUp(self):
         self.readme = f"# Profile\n\n{udb.ANCHOR}\n\nSome text.\n"
         self.values = [
             ("Total Downloads", "1.23M"),
-            ("Total Clones", "n%2Fa"),
             ("Total Stars", "50"),
             ("Total Forks", "10"),
         ]
@@ -273,7 +252,6 @@ class TestReadmeRewrite(unittest.TestCase):
         updated, changed = udb.update_readme(self.readme, self.values)
         self.assertTrue(changed)
         self.assertIn("Total%20Downloads-1.23M-", updated)
-        self.assertIn("Total%20Clones-n%2Fa-", updated)
         self.assertIn("Total%20Stars-50-", updated)
         self.assertIn("Total%20Forks-10-", updated)
         self.assertLess(updated.index(udb.ANCHOR), updated.index(udb.START_MARK))
@@ -375,52 +353,20 @@ class TestCollect(StubMixin, unittest.TestCase):
         self.assertEqual(result["downloads"], 1_000 + 1_000 + 250)
         self.assertNotIn("localshare", result["pypi"])
 
-    def test_clones_stay_unknown_without_a_traffic_token(self):
-        history = {"repos": {}}
-        result = udb.collect(api_key="k", history=history, fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
-        self.assertIsNone(result["clones"])
-        self.assertTrue(any("TRAFFIC_TOKEN" in n for n in result["notes"]))
-
-    def test_clone_history_is_merged_per_repo(self):
-        self.web.json["traffic/clones"] = lambda url, headers: {
-            "count": 9,
-            "clones": [{"timestamp": "2026-10-10T00:00:00Z", "count": 3}, {"timestamp": "2026-10-11T00:00:00Z", "count": 0}],
-        }
-        history = {"repos": {}}
-        result = udb.collect(api_key="k", traffic_token="t", history=history, fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
-        self.assertEqual(result["clones"], 3 * len(result["repos"]))
-        self.assertEqual(history["repos"]["Infinitode/Hued"], {"2026-10-10": 3})
-        traffic_calls = [h for url, h in self.web.json_calls if "traffic/clones" in url]
-        self.assertTrue(all(h.get("Authorization") == "Bearer t" for h in traffic_calls))
-
-    def test_one_repo_failing_its_clone_fetch_keeps_the_others(self):
-        def clones(url, headers):
-            if "/Hued/" in url:
-                raise http_error(403)
-            return {"clones": [{"timestamp": "2026-10-10T00:00:00Z", "count": 2}]}
-
-        self.web.json["traffic/clones"] = clones
-        history = {"repos": {}}
-        result = udb.collect(traffic_token="t", history=history, fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
-        self.assertIn("Infinitode/Hued", result["failures"])
-        self.assertNotIn("Infinitode/Hued", history["repos"])
-        self.assertIn("Infinitode/CloakJS", history["repos"])
 
 
 # --- entry point --------------------------------------------------------------
 
 
 class TestMain(StubMixin, unittest.TestCase):
-    """Drives the real main() against a throwaway README and clone history."""
+    """Drives the real main() against a throwaway README."""
 
     def setUp(self):
         self.readme_text = f"# Profile\n\n{udb.ANCHOR}\n"
         self.dir = tempfile.TemporaryDirectory()
         self.addCleanup(self.dir.cleanup)
         self.readme = os.path.join(self.dir.name, "README.md")
-        self.history = os.path.join(self.dir.name, "clone-history.json")
         self._write(self.readme, self.readme_text)
-        self._write(self.history, json.dumps({"repos": {}}))
         saved = {var: os.environ.pop(var) for var in TOKEN_VARS if var in os.environ}
         self.addCleanup(os.environ.update, saved)
         self.addCleanup(lambda: [os.environ.pop(var, None) for var in TOKEN_VARS])
@@ -442,7 +388,7 @@ class TestMain(StubMixin, unittest.TestCase):
         original_stdout, original_stderr = sys.stdout, sys.stderr
         sys.stdout = sys.stderr = buffer
         try:
-            code = udb.main([*argv, "--readme", self.readme, "--history", self.history])
+            code = udb.main([*argv, "--readme", self.readme])
         finally:
             sys.stdout, sys.stderr = original_stdout, original_stderr
         return code, buffer.getvalue()
@@ -467,19 +413,20 @@ class TestMain(StubMixin, unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertEqual(self._read(self.readme), self.readme_text)
 
-    def test_happy_path_writes_all_four_badges(self):
-        web = self._healthy_web()
-        web.json["traffic/clones"] = {"clones": [{"timestamp": "2026-10-10T00:00:00Z", "count": 7}]}
-        code, output = self._run(web, env={"PEPY_API_KEY": "k", "TRAFFIC_TOKEN": "t"})
+    def test_tokenless_run_writes_downloads_stars_and_forks(self):
+        code, output = self._run(self._healthy_web())
         self.assertEqual(code, 0, output)
         readme = self._read(self.readme)
-        # 2 packages x 1,000 + jsDelivr 0 for each repo except CloakJS (1.0k shields figure is the default)
-        # PyPI: hued + qrforge at 1,000 each; jsDelivr: CloakJS 250, the rest 0.
-        self.assertIn(f"Total%20Downloads-{udb.format_count(2_250)}-", readme)
+        self.assertIn("Total%20Downloads-", readme)
         self.assertIn("Total%20Stars-4-", readme)  # LocalShare 1 + Alloy 1 + Hued 2
         self.assertIn("Total%20Forks-1-", readme)
-        self.assertIn(f"Total%20Clones-{udb.format_count(7 * 5)}-", readme)  # 7 clones x 5 repos
-        self.assertEqual(json.loads(self._read(self.history))["repos"]["Infinitode/Hued"], {"2026-10-10": 7})
+        self.assertNotIn("Clones", readme)
+
+    def test_happy_path_with_pepy_key_is_exact(self):
+        code, output = self._run(self._healthy_web(), env={"PEPY_API_KEY": "k"})
+        self.assertEqual(code, 0, output)
+        # PyPI: hued + qrforge at 1,000 each (pepy); jsDelivr: CloakJS 250, the rest 0.
+        self.assertIn(f"Total%20Downloads-{udb.format_count(2_250)}-", self._read(self.readme))
 
     def test_dry_run_changes_nothing(self):
         code, output = self._run(self._healthy_web(), argv=["--dry-run"], env={"PEPY_API_KEY": "k"})
@@ -501,12 +448,6 @@ class TestMain(StubMixin, unittest.TestCase):
         code, _ = self._run(self._healthy_web(), argv=["--allow-decrease"], env={"PEPY_API_KEY": "k"})
         self.assertEqual(code, 0)
         self.assertNotIn("Total%20Downloads-10.00M-", self._read(self.readme))
-
-    def test_clones_show_not_available_without_a_token(self):
-        code, _ = self._run(self._healthy_web(), env={"PEPY_API_KEY": "k"})
-        self.assertEqual(code, 0)
-        self.assertIn("Total%20Clones-n%2Fa-", self._read(self.readme))
-        self.assertEqual(json.loads(self._read(self.history)), {"repos": {}})
 
     def test_repos_are_discovered_without_any_hand_list(self):
         code, output = self._run(self._healthy_web(), argv=["--dry-run"], env={"PEPY_API_KEY": "k"})

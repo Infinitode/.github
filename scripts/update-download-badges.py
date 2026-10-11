@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tally downloads, clones, stars and forks across Infinitode's public repos.
+"""Tally downloads, stars and forks across Infinitode's public repos.
 
 Nothing is hand-maintained. Every public repository owned by one of OWNERS is
 discovered from the GitHub API and counted; anything else is ignored. Packages
@@ -20,34 +20,27 @@ Downloads
     jsDelivr (last 12 months). shields.io ``/jsdelivr/gh/hy`` for every counted
     repo. jsDelivr publishes period stats only; there is no all-time figure.
 
-Clones
-    GitHub traffic API ``/traffic/clones``. It only returns the last 14 days and
-    needs push access to the repository, so it requires the TRAFFIC_TOKEN secret.
-    Daily counts are merged into CLONE_HISTORY, which is the all-time record.
-    The total therefore starts from the first run that has a token.
-
 Safety
 ------
 A failed fetch never overwrites published numbers. If the repo listing fails,
 nothing is written. If every download source fails, nothing is written. A
 download total is only published when it is not more than 5% below the figure
 already shown (download totals only increase, so a drop means partial data).
-Stars, forks and clones are not guarded, because they can legitimately fall.
+Stars and forks are not guarded, because they can legitimately fall.
 
 Usage::
 
     python3 scripts/update-download-badges.py --readme profile/README.md
     python3 scripts/update-download-badges.py --dry-run
 
-Environment: PEPY_API_KEY (optional), GITHUB_TOKEN (optional, raises the GitHub
-rate limit), TRAFFIC_TOKEN (optional, enables clone counts).
+Environment: PEPY_API_KEY (optional, exact PyPI counts). GITHUB_TOKEN is also
+read if present, which only raises the GitHub rate limit; nothing needs it.
 """
 
 from __future__ import annotations
 
 import argparse
 import base64
-import copy
 import gzip
 import json
 import os
@@ -63,9 +56,6 @@ OWNERS = (("johanbeytell1", "user"), ("Infinitode", "org"))
 
 # hy = hits per year, the longest window jsDelivr exposes.
 JSDELIVR_PERIOD = "hy"
-
-# Clone history, kept in the repo so the all-time total survives the 14-day window.
-CLONE_HISTORY = "data/clone-history.json"
 
 GITHUB_API = "https://api.github.com"
 GITHUB_HEADERS = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
@@ -234,26 +224,6 @@ def packaging_names(filename, text):
     return set(_PY_NAME_RE.findall(text))
 
 
-def merge_clones(history, full_name, daily):
-    """Fold one repo's daily clone counts into *history* (in place).
-
-    GitHub reports the last 14 days in full on every call, so a day is simply
-    overwritten with the latest count. Days that are zero are not stored.
-    """
-    days = history.setdefault("repos", {}).setdefault(full_name, {})
-    for day, count in daily.items():
-        if count > 0:
-            days[day] = count
-        else:
-            days.pop(day, None)
-    if not days:
-        history["repos"].pop(full_name, None)
-
-
-def history_total(history):
-    return sum(sum(days.values()) for days in history.get("repos", {}).values())
-
-
 def render_block(values):
     """The badge block. *values* is a list of ``(label, badge_text)`` pairs."""
     lines = [START_MARK]
@@ -410,43 +380,13 @@ def jsdelivr_totals(repos, period=JSDELIVR_PERIOD, fetch_text=None):
     return totals, failures
 
 
-def clone_counts(full_name, token, fetch_json=None):
-    """Daily clone counts for the last 14 days: ``{"YYYY-MM-DD": count}``."""
-    fetch_json = fetch_json or globals()["fetch_json"]
-    payload = fetch_json(f"{GITHUB_API}/repos/{full_name}/traffic/clones", github_headers(token))
-    return {entry["timestamp"][:10]: int(entry.get("count", 0)) for entry in payload.get("clones", [])}
-
-
-def load_history(path):
-    if not os.path.exists(path):
-        return {"repos": {}}
-    with open(path, encoding="utf-8") as handle:
-        history = json.load(handle)
-    history.setdefault("repos", {})
-    return history
-
-
-def save_history(path, history):
-    with open(path, "w", encoding="utf-8") as handle:
-        json.dump(history, handle, indent=2, sort_keys=True)
-        handle.write("\n")
-
-
 # --- collection --------------------------------------------------------------
 
 
-def collect(
-    api_key=None,
-    github_token=None,
-    traffic_token=None,
-    history=None,
-    fetch_json=None,
-    fetch_text=None,
-):
-    """Gather every figure. *history* is updated in place with clone data."""
+def collect(api_key=None, github_token=None, fetch_json=None, fetch_text=None):
+    """Gather every download, star and fork figure."""
     fetch_json = fetch_json or globals()["fetch_json"]
     fetch_text = fetch_text or globals()["fetch_text"]
-    history = history if history is not None else {"repos": {}}
 
     repos = discover_repos(fetch_json=fetch_json, token=github_token)
     notes = []
@@ -465,19 +405,6 @@ def collect(
         [repo["full_name"].lower() for repo in repos], fetch_text=fetch_text
     )
 
-    clone_failures = {}
-    if traffic_token:
-        for repo in repos:
-            full_name = repo["full_name"]
-            try:
-                daily = clone_counts(full_name, traffic_token, fetch_json=fetch_json)
-            except (urllib.error.URLError, ValueError) as error:
-                clone_failures[full_name] = f"traffic/clones -> {error}"
-                continue
-            merge_clones(history, full_name, daily)
-    else:
-        notes.append("TRAFFIC_TOKEN not set; clone counts were not refreshed")
-
     return {
         "repos": [repo["full_name"] for repo in repos],
         "stars": stars,
@@ -485,11 +412,10 @@ def collect(
         "packages": packages,
         "pypi": pypi,
         "jsdelivr": jsdelivr,
-        "failures": {**pypi_failures, **jsdelivr_failures, **clone_failures},
+        "failures": {**pypi_failures, **jsdelivr_failures},
         "notes": sorted(set(notes)),
         "download_sources": len(pypi) + len(jsdelivr),
         "downloads": sum(pypi.values()) + sum(jsdelivr.values()),
-        "clones": history_total(history) if history.get("repos") else None,
     }
 
 
@@ -499,7 +425,6 @@ def collect(
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Refresh the profile totals badges.")
     parser.add_argument("--readme", default="profile/README.md")
-    parser.add_argument("--history", default=CLONE_HISTORY, help="clone history JSON")
     parser.add_argument("--dry-run", action="store_true", help="print the result, change nothing")
     parser.add_argument(
         "--allow-decrease",
@@ -508,14 +433,10 @@ def main(argv=None):
     )
     args = parser.parse_args(argv)
 
-    history = load_history(args.history)
-    before = copy.deepcopy(history)
     try:
         result = collect(
             api_key=os.environ.get("PEPY_API_KEY") or None,
             github_token=os.environ.get("GITHUB_TOKEN") or None,
-            traffic_token=os.environ.get("TRAFFIC_TOKEN") or None,
-            history=history,
         )
     except (urllib.error.URLError, ValueError) as error:
         print(f"Could not list repositories ({error}); nothing was changed.", file=sys.stderr)
@@ -532,15 +453,13 @@ def main(argv=None):
         print(f"  jsdelivr {name:<29} {count:>14,}")
     for name, reason in sorted(result["failures"].items()):
         print(f"  FAILED   {name}: {reason}", file=sys.stderr)
-    clones = result["clones"]
     print(f"  {'DOWNLOADS':<38} {result['downloads']:>14,}  ({format_count(result['downloads'])})")
-    print(f"  {'CLONES':<38} {'n/a' if clones is None else f'{clones:,}'}")
     print(f"  {'STARS':<38} {result['stars']:>14,}")
     print(f"  {'FORKS':<38} {result['forks']:>14,}")
 
     # Never publish a download total we could not actually measure.
     if result["download_sources"] == 0:
-        print("Every download source failed; the README and clone history are left untouched.", file=sys.stderr)
+        print("Every download source failed; the README is left untouched.", file=sys.stderr)
         return 1
 
     with open(args.readme, encoding="utf-8") as handle:
@@ -565,7 +484,6 @@ def main(argv=None):
 
     values = [
         ("Total Downloads", downloads_text),
-        ("Total Clones", NOT_AVAILABLE if clones is None else format_count(clones)),
         ("Total Stars", format_count(result["stars"])),
         ("Total Forks", format_count(result["forks"])),
     ]
@@ -573,10 +491,6 @@ def main(argv=None):
     if args.dry_run:
         print("--dry-run: nothing written")
         return 0
-
-    if history != before:
-        save_history(args.history, history)
-        print(f"Updated clone history in {args.history}.")
 
     updated, changed = update_readme(original, values)
     if not changed:

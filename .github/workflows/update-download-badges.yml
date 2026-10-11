@@ -1,27 +1,17 @@
 name: Update profile totals
 
-# Tallies downloads, clones, stars and forks across the public repos of
-# johanbeytell1 and Infinitode, and rewrites the TOTAL-DOWNLOADS badge block in
+# Tallies downloads, stars and forks across the public repos of johanbeytell1
+# and Infinitode, and rewrites the TOTAL-DOWNLOADS badge block in
 # profile/README.md. Repos are discovered automatically; nothing is listed by hand.
+# No personal access tokens are needed.
 #
 # Data sources (see scripts/update-download-badges.py for details):
 #   Stars, forks  - GitHub repo listing (exact, all-time).
 #   PyPI          - packages that belong to a repo (verified by a link back to
-#                   the repo or by the repo's packaging file). pepy v2 API when
-#                   PEPY_API_KEY is set (exact), otherwise the shields.io
-#                   /pepy/dt badge (rounded).
+#                   the repo or by the repo's packaging file). Rounded shields.io
+#                   figures by default; set PEPY_API_KEY for exact counts.
 #   jsDelivr      - shields.io /jsdelivr/gh/hy badge for every repo; hits over
 #                   the last 12 months (there is no all-time jsDelivr figure).
-#   Clones        - GitHub traffic API, which only covers 14 days and needs
-#                   push access. Daily counts are merged into
-#                   data/clone-history.json so the total keeps growing.
-#
-# Secrets (both optional; the job still runs without them):
-#   PEPY_API_KEY  - exact PyPI counts (free key: pepy.tech -> sign in -> API key).
-#   TRAFFIC_TOKEN - a token with read access to repository traffic on every
-#                   counted repo (fine-grained PAT: Administration read, on both
-#                   owners' repos; or a classic PAT with the repo scope). Without
-#                   it, clone totals are not refreshed.
 #
 # Safety: a failed fetch never overwrites the published numbers. The job only
 # writes when the repo listing succeeded and at least one download source
@@ -35,7 +25,6 @@ on:
   pull_request:
     paths:
       - "scripts/**"
-      - "data/**"
       - ".github/workflows/update-download-badges.yml"
   push:
     branches: [main]
@@ -69,24 +58,22 @@ jobs:
       - name: Tally totals and rewrite the badges
         if: github.event_name != 'pull_request'
         env:
+          # Built into every workflow run; only used to raise the GitHub rate limit.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional. Without it PyPI counts are rounded shields.io figures.
           PEPY_API_KEY: ${{ secrets.PEPY_API_KEY }}
-          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
         run: |
           if [ -z "$PEPY_API_KEY" ]; then
-            echo "::warning::PEPY_API_KEY is not set; PyPI counts will be rounded shields.io figures."
+            echo "::notice::PEPY_API_KEY is not set; PyPI counts will be rounded shields.io figures."
           fi
-          if [ -z "$TRAFFIC_TOKEN" ]; then
-            echo "::warning::TRAFFIC_TOKEN is not set; clone totals will not be refreshed."
-          fi
-          python3 scripts/update-download-badges.py --readme profile/README.md --history data/clone-history.json
+          python3 scripts/update-download-badges.py --readme profile/README.md
 
       - name: Commit the updated badges
         if: github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add profile/README.md data/clone-history.json
+          git add profile/README.md
           if git diff --cached --quiet; then
             echo "Totals unchanged; nothing to commit."
           else
