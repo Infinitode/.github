@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Offline tests for scripts/update-download-badges.py.
 
-The download APIs are unreachable from CI sandboxes, so the network layer is
-stubbed here with payloads shaped like the real pepy JSON and shields.io SVG
-responses. Everything else -- count extraction, badge parsing, summing,
-formatting, the regression guards and the README rewrite -- is production code.
+The network layer is replaced with a router that answers with payloads shaped
+like the real GitHub, PyPI, pepy and shields.io responses. Everything else --
+repo discovery and ownership checks, counting, clone merging, badge parsing,
+the regression guards and the README rewrite -- is production code.
 
 Run with:  python3 -m unittest discover -s scripts -p 'test_*.py' -v
 """
 
 from __future__ import annotations
 
+import base64
 import io
+import json
 import os
 import sys
 import tempfile
@@ -27,6 +29,8 @@ _spec = importlib.util.spec_from_file_location("udb", os.path.join(_HERE, "updat
 udb = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(udb)
 
+TOKEN_VARS = ("PEPY_API_KEY", "GITHUB_TOKEN", "TRAFFIC_TOKEN")
+
 
 def shields_svg(label, value):
     """A shields.io flat-style badge, including the duplicated shadow text."""
@@ -41,348 +45,475 @@ def shields_svg(label, value):
 </svg>"""
 
 
-class StubJson:
-    def __init__(self, responses):
-        self.responses = responses
-        self.calls = []
-
-    def __call__(self, url, headers=None, timeout=30):
-        self.calls.append((url, headers or {}))
-        for needle, payload in self.responses.items():
-            if needle in url:
-                if isinstance(payload, Exception):
-                    raise payload
-                return payload
-        raise urllib.error.URLError(f"unstubbed json url: {url}")
+def repo(owner, name, stars=0, forks=0, private=False):
+    """A repository object as the GitHub listing API returns it (trimmed)."""
+    return {
+        "name": name,
+        "full_name": f"{owner}/{name}",
+        "owner": {"login": owner},
+        "private": private,
+        "visibility": "private" if private else "public",
+        "stargazers_count": stars,
+        "forks_count": forks,
+    }
 
 
-class StubText:
-    def __init__(self, responses):
-        self.responses = responses
-        self.calls = []
-
-    def __call__(self, url, headers=None, timeout=30):
-        self.calls.append((url, headers or {}))
-        for needle, payload in self.responses.items():
-            if needle in url:
-                if isinstance(payload, Exception):
-                    raise payload
-                return payload
-        raise urllib.error.URLError(f"unstubbed text url: {url}")
+def pypi_meta(home=None, description=""):
+    return {
+        "info": {
+            "home_page": home,
+            "download_url": None,
+            "project_url": None,
+            "project_urls": None,
+            "description": description,
+        }
+    }
 
 
-PEPY_JSON = {"name": "codesafe", "total_downloads": 1234, "recent_downloads": {"last_month": 90}}
-BADGE_SVG = shields_svg("downloads", "1.2k")
+def contents_file(name, text):
+    """What GET /repos/{o}/{r}/contents/{file} returns for a file."""
+    return {"content": base64.b64encode(text.encode("utf-8")).decode("ascii"), "name": name}
 
 
-class TestShieldsBadgeParsing(unittest.TestCase):
-    def test_reads_the_value_not_the_label(self):
-        self.assertEqual(udb.parse_shields_badge(BADGE_SVG), 1200)
+def http_error(code):
+    return urllib.error.HTTPError("http://test", code, "test", None, None)
 
-    def test_thousands_separator(self):
-        self.assertEqual(udb.parse_shields_badge(shields_svg("hits", "1,234")), 1234)
 
-    def test_mega_suffix(self):
-        self.assertEqual(udb.parse_shields_badge(shields_svg("downloads", "2.5M")), 2_500_000)
+class FakeWeb:
+    """Routes each URL to the most specific fragment that matches it.
 
-    def test_plain_integer(self):
-        self.assertEqual(udb.parse_shields_badge(shields_svg("hits", "999")), 999)
+    A route value is a payload, an exception to raise, or a callable taking the
+    URL and returning either of those.
+    """
 
-    def test_error_badge_yields_none(self):
+    def __init__(self):
+        self.json = {}
+        self.text = {}
+        self.json_calls = []
+
+    def fetch_json(self, url, headers=None, timeout=30):
+        self.json_calls.append((url, headers or {}))
+        return self._route(self.json, url, headers)
+
+    def fetch_text(self, url, headers=None, timeout=30):
+        return self._route(self.text, url, headers)
+
+    @staticmethod
+    def _route(table, url, headers):
+        matches = [needle for needle in table if needle in url]
+        if not matches:
+            raise urllib.error.URLError(f"unstubbed url: {url}")
+        value = table[max(matches, key=len)]
+        if callable(value):
+            value = value(url, headers)
+        if isinstance(value, Exception):
+            raise value
+        return value
+
+
+def page_of(url):
+    """The ``page=`` query value of a listing URL (1 when absent)."""
+    for part in url.split("?", 1)[-1].split("&"):
+        if part.startswith("page="):
+            return int(part.split("=", 1)[1])
+    return 1
+
+
+def listing(repos):
+    """A repo listing that serves everything on page 1 and nothing after."""
+    return lambda url, headers: repos if page_of(url) == 1 else []
+
+
+def standard_world():
+    """Two owners, one private repo, one foreign repo, and packages of every kind."""
+    web = FakeWeb()
+    web.json.update(
+        {
+            "/users/johanbeytell1/repos": listing(
+                [
+                    repo("johanbeytell1", "LocalShare", stars=1),  # PyPI name taken by someone else
+                    repo("johanbeytell1", "Alloy", stars=1),
+                    repo("johanbeytell1", "Secret", stars=99, private=True),
+                ]
+            ),
+            "/orgs/Infinitode/repos": listing(
+                [
+                    repo("Infinitode", "Hued", stars=2, forks=1),
+                    repo("Infinitode", "qrforge"),
+                    repo("Infinitode", "CloakJS"),
+                    repo("someone-else", "hued-fork", stars=50),  # not ours, even if listed
+                ]
+            ),
+            # PyPI: hued links back to our repo; qrforge only declares its name in setup.py;
+            # localshare is someone else's project; alloy and cloakjs are not on PyPI.
+            "pypi.org/pypi/hued/json": pypi_meta(home="https://github.com/Infinitode/Hued"),
+            "pypi.org/pypi/qrforge/json": pypi_meta(description="# qrforge\nNo links here."),
+            "pypi.org/pypi/localshare/json": pypi_meta(home="https://github.com/sunu/localshare"),
+            "pypi.org/pypi/alloy/json": http_error(404),
+            "pypi.org/pypi/cloakjs/json": http_error(404),
+            "/repos/Infinitode/qrforge/contents/setup.py": contents_file(
+                "setup.py", "setup(name='qrforge', version='1.0.1')"
+            ),
+            "/repos/Infinitode/qrforge/contents": [
+                {"type": "file", "name": "setup.py", "url": "https://api.github.com/repos/Infinitode/qrforge/contents/setup.py"},
+                {"type": "dir", "name": "tests", "url": "https://api.github.com/x"},
+            ],
+            "/repos/johanbeytell1/LocalShare/contents": [{"type": "file", "name": "readme.md", "url": "x"}],
+            "/repos/Infinitode/Hued/contents": http_error(404),
+        }
+    )
+    web.json["/repos/johanbeytell1/Alloy/contents"] = []
+    web.json["/repos/Infinitode/CloakJS/contents"] = []
+    return web
+
+
+def standard_text_world(web):
+    web.text.update(
+        {
+            "img.shields.io/pepy/dt/": lambda url, headers: shields_svg("downloads", "1.0k"),
+            "img.shields.io/jsdelivr/gh/hy/infinitode/cloakjs": shields_svg("hits", "250"),
+            "img.shields.io/jsdelivr/gh/hy/": shields_svg("hits", "0"),
+        }
+    )
+    return web
+
+
+class StubMixin:
+    """Points the module's network layer at a FakeWeb for the duration of a test."""
+
+    def install(self, web):
+        self._saved = (udb.fetch_json, udb.fetch_text)
+        udb.fetch_json, udb.fetch_text = web.fetch_json, web.fetch_text
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        udb.fetch_json, udb.fetch_text = self._saved
+
+
+# --- parsers and helpers ------------------------------------------------------
+
+
+class TestParsers(unittest.TestCase):
+    def test_shields_badge_reads_the_value(self):
+        self.assertEqual(udb.parse_shields_badge(shields_svg("hits", "5.6k")), 5600)
+        self.assertEqual(udb.parse_shields_badge(shields_svg("downloads", "1,234")), 1234)
+
+    def test_shields_error_badge_has_no_value(self):
         self.assertIsNone(udb.parse_shields_badge(shields_svg("downloads", "unavailable")))
-
-    def test_empty_input_yields_none(self):
         self.assertIsNone(udb.parse_shields_badge(""))
-        self.assertIsNone(udb.parse_shields_badge(None))
 
-    def test_title_element_is_not_mistaken_for_the_value(self):
-        svg = shields_svg("downloads", "42")
-        self.assertIn("<title>downloads: 42</title>", svg)
-        self.assertEqual(udb.parse_shields_badge(svg), 42)
+    def test_format_count(self):
+        self.assertEqual(udb.format_count(999), "999")
+        self.assertEqual(udb.format_count(45_678), "45.7k")
+        self.assertEqual(udb.format_count(1_234_567), "1.23M")
+        self.assertEqual(udb.format_count(999_999), "1.00M")  # never "1000.0k"
+        self.assertEqual(udb.format_count(2_000_000_000), "2.00B")
 
+    def test_find_count_prefers_exact_all_time_keys(self):
+        self.assertEqual(udb.find_count({"downloads": {"last_month": 5}, "total_downloads": 9}), 9)
+        self.assertIsNone(udb.find_count({"nothing": "here"}))
 
-class TestCountExtraction(unittest.TestCase):
-    def test_finds_pepy_total_downloads(self):
-        self.assertEqual(udb.find_count(PEPY_JSON), 1234)
+    def test_parse_badge_value_reads_downloads_only(self):
+        text = udb.render_block([("Total Downloads", "5.17M"), ("Total Stars", "50")])
+        self.assertEqual(udb.parse_badge_value(text), 5_170_000)
+        self.assertIsNone(udb.parse_badge_value("no badge here"))
 
-    def test_finds_jsdelivr_total_hits(self):
-        self.assertEqual(udb.find_count({"type": "github", "totalHits": 5678}), 5678)
+    def test_normalize_name_follows_pep503(self):
+        self.assertEqual(udb.normalize_name("Py_AutoPlot"), "py-autoplot")
+        self.assertEqual(udb.normalize_name("LocalSiteMap"), "localsitemap")
 
-    def test_prefers_all_time_key_over_period_hits(self):
-        self.assertEqual(udb.find_count({"hits": {"lastMonth": 50}, "totalHits": 999}), 999)
+    def test_is_counted_keeps_only_public_repos_of_the_owner(self):
+        self.assertTrue(udb.is_counted(repo("Infinitode", "Hued"), "infinitode"))
+        self.assertFalse(udb.is_counted(repo("Infinitode", "Hued", private=True), "Infinitode"))
+        self.assertFalse(udb.is_counted(repo("someone-else", "hued-fork"), "Infinitode"))
 
-    def test_returns_none_when_absent_or_non_numeric(self):
-        self.assertIsNone(udb.find_count({"name": "nothing"}))
-        self.assertIsNone(udb.find_count({"downloads": True}))
+    def test_links_back_needs_the_exact_repo(self):
+        self.assertTrue(udb.links_back(pypi_meta(home="https://github.com/Infinitode/Hued"), "Infinitode", "Hued"))
+        self.assertFalse(udb.links_back(pypi_meta(home="https://github.com/sunu/localshare"), "johanbeytell1", "LocalShare"))
+        # a longer repo name must not count as a match for the shorter one
+        self.assertFalse(udb.links_back(pypi_meta(home="https://github.com/infinitode/localsitemap-tools"), "infinitode", "localsitemap"))
 
-
-class TestFormatting(unittest.TestCase):
-    def test_boundaries(self):
-        cases = [
-            (0, "0"), (999, "999"), (1_000, "1.0k"), (45_678, "45.7k"),
-            (999_949, "999.9k"), (999_950, "1.00M"), (1_234_567, "1.23M"),
-            (1_000_000_000, "1.00B"), (12_300_000_000, "12.30B"),
-        ]
-        for value, expected in cases:
-            self.assertEqual(udb.format_count(value), expected, f"format_count({value})")
-
-    def test_never_renders_1000k(self):
-        self.assertNotIn("1000.0k", [udb.format_count(n) for n in range(990_000, 1_010_000, 997)])
-
-    def test_value_is_url_safe(self):
-        for value in (0, 999, 45_678, 999_950, 1_234_567):
-            self.assertRegex(udb.format_count(value), r"^[0-9.]+[kMB]?$")
-
-    def test_round_trips_through_parse_badge_value(self):
-        for value in (0, 999, 45_678, 999_950, 1_234_567, 12_300_000_000):
-            badge = udb.BADGE.format(value=udb.format_count(value))
-            parsed = udb.parse_badge_value(badge)
-            # rounded display loses precision, but must stay within 0.5%
-            self.assertAlmostEqual(parsed, value, delta=max(1, value * 0.005))
+    def test_packaging_names(self):
+        self.assertEqual(udb.packaging_names("setup.py", "setup(name='qrforge', version='1')"), {"qrforge"})
+        self.assertEqual(udb.packaging_names("pyproject.toml", '[project]\nname = "hued"\n'), {"hued"})
+        self.assertEqual(udb.packaging_names("setup.cfg", "[metadata]\nname = valx\n"), {"valx"})
 
 
-class TestPypiTotals(unittest.TestCase):
-    def test_uses_the_pepy_api_when_a_key_is_set(self):
-        fetch_json = StubJson({"api.pepy.tech": PEPY_JSON})
-        totals, failures, notes = udb.pypi_totals(
-            ["codesafe"], api_key="secret", fetch_json=fetch_json, fetch_text=StubText({})
-        )
-        self.assertEqual(totals, {"codesafe": 1234})
-        self.assertEqual(failures, {})
-        self.assertEqual(notes, [])
-        self.assertEqual(fetch_json.calls[0][1], {"X-Api-Key": "secret"})
+class TestClones(unittest.TestCase):
+    def test_days_are_overwritten_not_added(self):
+        history = {"repos": {}}
+        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 3, "2026-10-11": 1})
+        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 5, "2026-10-11": 1})
+        self.assertEqual(udb.history_total(history), 6)
 
-    def test_falls_back_to_shields_without_a_key(self):
-        fetch_text = StubText({"img.shields.io": BADGE_SVG})
-        totals, failures, notes = udb.pypi_totals(
-            ["codesafe"], api_key=None, fetch_json=StubJson({}), fetch_text=fetch_text
-        )
-        self.assertEqual(totals, {"codesafe": 1200})
-        self.assertEqual(failures, {})
-        self.assertTrue(any("PEPY_API_KEY" in n for n in notes))
+    def test_zero_days_are_dropped_and_empty_repos_removed(self):
+        history = {"repos": {}}
+        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 2})
+        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 0})
+        self.assertEqual(history, {"repos": {}})
 
-    def test_falls_back_to_shields_when_the_pepy_api_rejects_the_key(self):
-        fetch_json = StubJson({"api.pepy.tech": urllib.error.HTTPError("u", 403, "Forbidden", {}, None)})
-        totals, _, _ = udb.pypi_totals(
-            ["codesafe"], api_key="bad", fetch_json=fetch_json, fetch_text=StubText({"img.shields.io": BADGE_SVG})
-        )
-        self.assertEqual(totals, {"codesafe": 1200})
-
-    def test_records_failure_when_both_sources_fail(self):
-        totals, failures, _ = udb.pypi_totals(
-            ["codesafe"],
-            api_key="k",
-            fetch_json=StubJson({"api.pepy.tech": urllib.error.HTTPError("u", 403, "Forbidden", {}, None)}),
-            fetch_text=StubText({"img.shields.io": shields_svg("downloads", "unavailable")}),
-        )
-        self.assertEqual(totals, {})
-        self.assertIn("codesafe", failures)
-
-
-class TestJsdelivrTotals(unittest.TestCase):
-    def test_reads_hits_from_the_badge(self):
-        fetch_text = StubText({"img.shields.io": shields_svg("hits", "5.6k")})
-        totals, failures = udb.jsdelivr_totals(["infinitode/blurjs"], fetch_text=fetch_text)
-        self.assertEqual(totals, {"infinitode/blurjs": 5600})
-        self.assertEqual(failures, {})
-        self.assertIn("/jsdelivr/gh/hy/infinitode/blurjs", fetch_text.calls[0][0])
-
-    def test_records_failure_for_an_error_badge(self):
-        totals, failures = udb.jsdelivr_totals(
-            ["infinitode/blurjs"],
-            fetch_text=StubText({"img.shields.io": shields_svg("hits", "unavailable")}),
-        )
-        self.assertEqual(totals, {})
-        self.assertIn("infinitode/blurjs", failures)
+    def test_totals_accumulate_across_repos(self):
+        history = {"repos": {}}
+        udb.merge_clones(history, "Infinitode/Hued", {"2026-10-10": 4})
+        udb.merge_clones(history, "johanbeytell1/Alloy", {"2026-10-09": 1})
+        self.assertEqual(udb.history_total(history), 5)
 
 
 class TestReadmeRewrite(unittest.TestCase):
     def setUp(self):
         self.readme = f"# Profile\n\n{udb.ANCHOR}\n\nSome text.\n"
+        self.values = [
+            ("Total Downloads", "1.23M"),
+            ("Total Clones", "n%2Fa"),
+            ("Total Stars", "50"),
+            ("Total Forks", "10"),
+        ]
 
-    def test_inserts_after_visitor_counter_on_first_run(self):
-        updated, changed = udb.update_readme(self.readme, 1_234_567)
+    def test_inserts_all_badges_after_visitor_counter_on_first_run(self):
+        updated, changed = udb.update_readme(self.readme, self.values)
         self.assertTrue(changed)
         self.assertIn("Total%20Downloads-1.23M-", updated)
+        self.assertIn("Total%20Clones-n%2Fa-", updated)
+        self.assertIn("Total%20Stars-50-", updated)
+        self.assertIn("Total%20Forks-10-", updated)
         self.assertLess(updated.index(udb.ANCHOR), updated.index(udb.START_MARK))
 
     def test_replaces_in_place_on_later_runs(self):
-        once, _ = udb.update_readme(self.readme, 1_000)
-        twice, changed = udb.update_readme(once, 2_000_000)
+        once, _ = udb.update_readme(self.readme, self.values)
+        twice, changed = udb.update_readme(once, [("Total Downloads", "2.00M"), ("Total Stars", "51")])
         self.assertTrue(changed)
         self.assertEqual(twice.count("TOTAL-DOWNLOADS:START"), 1)
-        self.assertIn("2.00M", twice)
+        self.assertIn("Total%20Downloads-2.00M-", twice)
+        self.assertIn("Total%20Stars-51-", twice)
+        self.assertNotIn("Total%20Forks", twice, "the block is rewritten as a whole")
 
-    def test_idempotent_for_same_value(self):
-        once, _ = udb.update_readme(self.readme, 1234)
-        twice, changed = udb.update_readme(once, 1234)
+    def test_idempotent_for_same_values(self):
+        once, _ = udb.update_readme(self.readme, self.values)
+        twice, changed = udb.update_readme(once, self.values)
         self.assertFalse(changed)
         self.assertEqual(once, twice)
 
     def test_no_anchor_and_no_marker_is_a_noop(self):
-        updated, changed = udb.update_readme("nothing here\n", 1)
+        updated, changed = udb.update_readme("nothing here\n", self.values)
         self.assertFalse(changed)
+        self.assertEqual(updated, "nothing here\n")
+
+    def test_current_downloads_text_reads_the_published_value(self):
+        text, _ = udb.update_readme(self.readme, self.values)
+        self.assertEqual(udb.current_downloads_text(text), "1.23M")
+        self.assertIsNone(udb.current_downloads_text("no badge"))
 
 
-class TestMain(unittest.TestCase):
-    """Drives the real main() against a throwaway copy of the README."""
+# --- discovery ----------------------------------------------------------------
+
+
+class TestDiscovery(StubMixin, unittest.TestCase):
+    def setUp(self):
+        self.web = standard_world()
+        self.install(self.web)
+
+    def test_lists_only_public_repos_of_the_two_owners(self):
+        names = sorted(r["full_name"] for r in udb.discover_repos())
+        self.assertEqual(
+            names,
+            ["Infinitode/CloakJS", "Infinitode/Hued", "Infinitode/qrforge", "johanbeytell1/Alloy", "johanbeytell1/LocalShare"],
+        )
+
+    def test_listing_follows_pages(self):
+        many = [repo("Infinitode", f"r{i}") for i in range(100)]
+        self.web.json["/orgs/Infinitode/repos"] = lambda url, headers: many if page_of(url) == 1 else [repo("Infinitode", "last")]
+        repos = udb.list_public_repos("Infinitode", "org", fetch_json=self.web.fetch_json)
+        self.assertEqual(len(repos), 101)
+
+    def test_sends_the_github_token_only_when_given(self):
+        udb.discover_repos(token="tok")
+        self.assertTrue(all(h.get("Authorization") == "Bearer tok" for _, h in self.web.json_calls))
+
+    def test_pypi_package_must_belong_to_the_repo(self):
+        pairs = {
+            "Infinitode/Hued": "hued",  # linked from PyPI metadata
+            "Infinitode/qrforge": "qrforge",  # declared by the repo's setup.py
+            "johanbeytell1/LocalShare": None,  # PyPI "localshare" is someone else's
+            "johanbeytell1/Alloy": None,  # not on PyPI at all
+        }
+        for full_name, expected in pairs.items():
+            owner, name = full_name.split("/")
+            found = udb.pypi_package_for(repo(owner, name), fetch_json=self.web.fetch_json)
+            self.assertEqual(found, expected, full_name)
+
+    def test_discover_pypi_maps_repos_to_packages(self):
+        repos = udb.discover_repos()
+        packages, notes = udb.discover_pypi(repos, fetch_json=self.web.fetch_json)
+        self.assertEqual(packages, {"Infinitode/Hued": "hued", "Infinitode/qrforge": "qrforge"})
+        self.assertEqual(notes, [])
+
+    def test_pypi_server_error_is_a_note_not_a_crash(self):
+        self.web.json["pypi.org/pypi/hued/json"] = http_error(500)
+        packages, notes = udb.discover_pypi(udb.discover_repos(), fetch_json=self.web.fetch_json)
+        self.assertNotIn("Infinitode/Hued", packages)
+        self.assertTrue(any("Infinitode/Hued" in n for n in notes))
+
+
+# --- collection ---------------------------------------------------------------
+
+
+class TestCollect(StubMixin, unittest.TestCase):
+    def setUp(self):
+        self.web = standard_text_world(standard_world())
+        self.web.json["api.pepy.tech"] = lambda url, headers: {"total_downloads": 1_000}
+        self.install(self.web)
+
+    def test_stars_and_forks_are_summed_over_counted_repos(self):
+        result = udb.collect(api_key="k", fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+        self.assertEqual(result["stars"], 1 + 1 + 2)  # LocalShare, Alloy, Hued; Secret and the foreign fork excluded
+        self.assertEqual(result["forks"], 1)
+
+    def test_downloads_come_from_pypi_and_jsdelivr(self):
+        result = udb.collect(api_key="k", fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+        self.assertEqual(result["pypi"], {"hued": 1_000, "qrforge": 1_000})
+        self.assertEqual(result["jsdelivr"]["infinitode/cloakjs"], 250)
+        self.assertEqual(result["downloads"], 1_000 + 1_000 + 250)
+        self.assertNotIn("localshare", result["pypi"])
+
+    def test_clones_stay_unknown_without_a_traffic_token(self):
+        history = {"repos": {}}
+        result = udb.collect(api_key="k", history=history, fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+        self.assertIsNone(result["clones"])
+        self.assertTrue(any("TRAFFIC_TOKEN" in n for n in result["notes"]))
+
+    def test_clone_history_is_merged_per_repo(self):
+        self.web.json["traffic/clones"] = lambda url, headers: {
+            "count": 9,
+            "clones": [{"timestamp": "2026-10-10T00:00:00Z", "count": 3}, {"timestamp": "2026-10-11T00:00:00Z", "count": 0}],
+        }
+        history = {"repos": {}}
+        result = udb.collect(api_key="k", traffic_token="t", history=history, fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+        self.assertEqual(result["clones"], 3 * len(result["repos"]))
+        self.assertEqual(history["repos"]["Infinitode/Hued"], {"2026-10-10": 3})
+        traffic_calls = [h for url, h in self.web.json_calls if "traffic/clones" in url]
+        self.assertTrue(all(h.get("Authorization") == "Bearer t" for h in traffic_calls))
+
+    def test_one_repo_failing_its_clone_fetch_keeps_the_others(self):
+        def clones(url, headers):
+            if "/Hued/" in url:
+                raise http_error(403)
+            return {"clones": [{"timestamp": "2026-10-10T00:00:00Z", "count": 2}]}
+
+        self.web.json["traffic/clones"] = clones
+        history = {"repos": {}}
+        result = udb.collect(traffic_token="t", history=history, fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+        self.assertIn("Infinitode/Hued", result["failures"])
+        self.assertNotIn("Infinitode/Hued", history["repos"])
+        self.assertIn("Infinitode/CloakJS", history["repos"])
+
+
+# --- entry point --------------------------------------------------------------
+
+
+class TestMain(StubMixin, unittest.TestCase):
+    """Drives the real main() against a throwaway README and clone history."""
 
     def setUp(self):
-        self.readme = f"# Profile\n\n{udb.ANCHOR}\n"
-        self.path = self._write(self.readme)
+        self.readme_text = f"# Profile\n\n{udb.ANCHOR}\n"
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.readme = os.path.join(self.dir.name, "README.md")
+        self.history = os.path.join(self.dir.name, "clone-history.json")
+        self._write(self.readme, self.readme_text)
+        self._write(self.history, json.dumps({"repos": {}}))
+        saved = {var: os.environ.pop(var) for var in TOKEN_VARS if var in os.environ}
+        self.addCleanup(os.environ.update, saved)
+        self.addCleanup(lambda: [os.environ.pop(var, None) for var in TOKEN_VARS])
 
-    def _write(self, text):
-        handle = tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8")
-        handle.write(text)
-        handle.close()
-        self.addCleanup(os.unlink, handle.name)
-        return handle.name
+    @staticmethod
+    def _write(path, text):
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(text)
 
-    def _read(self):
-        with open(self.path, encoding="utf-8") as handle:
+    def _read(self, path):
+        with open(path, encoding="utf-8") as handle:
             return handle.read()
 
-    def _run(self, argv, json_responses=None, text_responses=None, api_key=None):
-        # text_responses is keyed by URL fragment: "pepy" or "jsdelivr".
-        if api_key is None:
-            os.environ.pop("PEPY_API_KEY", None)
-        else:
-            os.environ["PEPY_API_KEY"] = api_key
-        self.addCleanup(os.environ.pop, "PEPY_API_KEY", None)
-
-        udb.fetch_json = StubJson(json_responses or {})
-        udb.fetch_text = StubText(text_responses or {})
+    def _run(self, web, argv=(), env=None):
+        self.install(web)
+        for var, value in (env or {}).items():
+            os.environ[var] = value
         buffer = io.StringIO()
-        original_stdout, sys.stdout = sys.stdout, buffer
+        original_stdout, original_stderr = sys.stdout, sys.stderr
+        sys.stdout = sys.stderr = buffer
         try:
-            code = udb.main(argv)
+            code = udb.main([*argv, "--readme", self.readme, "--history", self.history])
         finally:
-            sys.stdout = original_stdout
+            sys.stdout, sys.stderr = original_stdout, original_stderr
         return code, buffer.getvalue()
 
-    def test_all_sources_failing_leaves_the_badge_untouched(self):
-        """The regression that shipped: a total wipeout must never publish 0."""
-        dead = shields_svg("downloads", "unavailable")
-        code, _ = self._run(
-            ["--readme", self.path],
-            text_responses={"pepy": dead, "jsdelivr": shields_svg("hits", "unavailable")},
-        )
+    def _healthy_web(self):
+        web = standard_text_world(standard_world())
+        web.json["api.pepy.tech"] = lambda url, headers: {"total_downloads": 1_000}
+        return web
+
+    def test_listing_failure_changes_nothing(self):
+        web = self._healthy_web()
+        web.json["/orgs/Infinitode/repos"] = http_error(503)
+        code, _ = self._run(web)
         self.assertEqual(code, 1)
-        self.assertEqual(self._read(), self.readme, "README must stay byte-identical")
+        self.assertEqual(self._read(self.readme), self.readme_text)
 
-    def test_published_zero_is_treated_as_unpublished(self):
-        """A bogus 0 left by a failed run must not block the next good one."""
-        with open(self.path, "w", encoding="utf-8") as handle:
-            handle.write(udb.update_readme(self.readme, 0)[0])
-        self.assertIn("Total%20Downloads-0-", self._read())
+    def test_every_download_source_failing_changes_nothing(self):
+        web = standard_world()
+        web.json["api.pepy.tech"] = http_error(500)
+        web.text["img.shields.io"] = urllib.error.URLError("offline")
+        code, _ = self._run(web, env={"PEPY_API_KEY": "k"})
+        self.assertEqual(code, 1)
+        self.assertEqual(self._read(self.readme), self.readme_text)
 
-        code, _ = self._run(
-            ["--readme", self.path],
-            json_responses={pkg: {"total_downloads": 1_000} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "0")},
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        self.assertNotIn("Total%20Downloads-0-", self._read())
-        self.assertIn(udb.format_count(1_000 * len(udb.PYPI_PACKAGES)), self._read())
-
-    def test_lower_total_is_refused(self):
-        with open(self.path, "w", encoding="utf-8") as handle:
-            handle.write(udb.update_readme(self.readme, 10_000_000)[0])
-        code, _ = self._run(
-            ["--readme", self.path],
-            json_responses={pkg: {"total_downloads": 100} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "0")},
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        self.assertIn("10.00M", self._read())
-
-    def test_rounding_level_decrease_still_writes(self):
-        """"5.17M" stands for [5,165,000, 5,175,000); 5,168,400 is not a drop."""
-        with open(self.path, "w", encoding="utf-8") as handle:
-            handle.write(udb.update_readme(self.readme, 5_170_000)[0])
-        self.assertIn("5.17M", self._read())
-
-        per_package = 5_168_400 // len(udb.PYPI_PACKAGES)
-        total = per_package * len(udb.PYPI_PACKAGES)
-        self.assertLess(total, 5_170_000)  # genuinely below the published figure
-        self.assertGreater(total, 5_170_000 * 0.95)  # but inside the tolerance
-
-        code, output = self._run(
-            ["--readme", self.path],
-            json_responses={pkg: {"total_downloads": per_package} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "0")},
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        self.assertNotIn("Refusing", output, "rounding noise must not trip the guard")
-        self.assertIn(udb.format_count(total), self._read())
-
-    def test_drop_beyond_tolerance_is_refused(self):
-        with open(self.path, "w", encoding="utf-8") as handle:
-            handle.write(udb.update_readme(self.readme, 10_000_000)[0])
-        # ~40% drop -- one or more sources missing
-        code, _ = self._run(
-            ["--readme", self.path],
-            json_responses={pkg: {"total_downloads": 400_000} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "0")},
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        self.assertIn("10.00M", self._read())
-
-    def test_allow_decrease_overrides_the_guard(self):
-        with open(self.path, "w", encoding="utf-8") as handle:
-            handle.write(udb.update_readme(self.readme, 10_000_000)[0])
-        code, _ = self._run(
-            ["--readme", self.path, "--allow-decrease"],
-            json_responses={pkg: {"total_downloads": 100} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "0")},
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        expected = 100 * len(udb.PYPI_PACKAGES)
-        self.assertIn(udb.format_count(expected), self._read())
-
-    def test_partial_failure_still_publishes_the_rest(self):
-        responses = {pkg: {"total_downloads": 1_000} for pkg in udb.PYPI_PACKAGES}
-        responses["qrforge"] = urllib.error.URLError("boom")
-        code, _ = self._run(
-            ["--readme", self.path],
-            json_responses=responses,
-            text_responses={
-                "pepy": shields_svg("downloads", "unavailable"),  # fallback also dead
-                "jsdelivr": shields_svg("hits", "4k"),
-            },
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        expected = 1_000 * (len(udb.PYPI_PACKAGES) - 1) + 4_000
-        self.assertIn(udb.format_count(expected), self._read())
-
-    def test_happy_path_writes_the_tally(self):
-        code, output = self._run(
-            ["--readme", self.path],
-            json_responses={pkg: {"total_downloads": 1_000_000} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "400k")},
-            api_key="k",
-        )
-        self.assertEqual(code, 0)
-        expected = 1_000_000 * len(udb.PYPI_PACKAGES) + 400_000
-        self.assertIn(f"{expected:>14,}", output)
-        self.assertIn(udb.format_count(expected), self._read())
+    def test_happy_path_writes_all_four_badges(self):
+        web = self._healthy_web()
+        web.json["traffic/clones"] = {"clones": [{"timestamp": "2026-10-10T00:00:00Z", "count": 7}]}
+        code, output = self._run(web, env={"PEPY_API_KEY": "k", "TRAFFIC_TOKEN": "t"})
+        self.assertEqual(code, 0, output)
+        readme = self._read(self.readme)
+        # 2 packages x 1,000 + jsDelivr 0 for each repo except CloakJS (1.0k shields figure is the default)
+        # PyPI: hued + qrforge at 1,000 each; jsDelivr: CloakJS 250, the rest 0.
+        self.assertIn(f"Total%20Downloads-{udb.format_count(2_250)}-", readme)
+        self.assertIn("Total%20Stars-4-", readme)  # LocalShare 1 + Alloy 1 + Hued 2
+        self.assertIn("Total%20Forks-1-", readme)
+        self.assertIn(f"Total%20Clones-{udb.format_count(7 * 5)}-", readme)  # 7 clones x 5 repos
+        self.assertEqual(json.loads(self._read(self.history))["repos"]["Infinitode/Hued"], {"2026-10-10": 7})
 
     def test_dry_run_changes_nothing(self):
-        code, output = self._run(
-            ["--readme", self.path, "--dry-run"],
-            json_responses={pkg: {"total_downloads": 7} for pkg in udb.PYPI_PACKAGES},
-            text_responses={"jsdelivr": shields_svg("hits", "8")},
-            api_key="k",
-        )
+        code, output = self._run(self._healthy_web(), argv=["--dry-run"], env={"PEPY_API_KEY": "k"})
         self.assertEqual(code, 0)
         self.assertIn("--dry-run", output)
-        self.assertEqual(self._read(), self.readme)
+        self.assertEqual(self._read(self.readme), self.readme_text)
+
+    def test_drop_beyond_tolerance_keeps_the_published_downloads(self):
+        self._write(self.readme, udb.update_readme(self.readme_text, [("Total Downloads", "10.00M")])[0])
+        code, output = self._run(self._healthy_web(), env={"PEPY_API_KEY": "k"})
+        self.assertEqual(code, 0)
+        self.assertIn("Refusing", output)
+        readme = self._read(self.readme)
+        self.assertIn("Total%20Downloads-10.00M-", readme)
+        self.assertIn("Total%20Stars-4-", readme, "other figures still refresh")
+
+    def test_allow_decrease_publishes_a_lower_total(self):
+        self._write(self.readme, udb.update_readme(self.readme_text, [("Total Downloads", "10.00M")])[0])
+        code, _ = self._run(self._healthy_web(), argv=["--allow-decrease"], env={"PEPY_API_KEY": "k"})
+        self.assertEqual(code, 0)
+        self.assertNotIn("Total%20Downloads-10.00M-", self._read(self.readme))
+
+    def test_clones_show_not_available_without_a_token(self):
+        code, _ = self._run(self._healthy_web(), env={"PEPY_API_KEY": "k"})
+        self.assertEqual(code, 0)
+        self.assertIn("Total%20Clones-n%2Fa-", self._read(self.readme))
+        self.assertEqual(json.loads(self._read(self.history)), {"repos": {}})
+
+    def test_repos_are_discovered_without_any_hand_list(self):
+        code, output = self._run(self._healthy_web(), argv=["--dry-run"], env={"PEPY_API_KEY": "k"})
+        self.assertIn("Infinitode/CloakJS", output)
+        self.assertIn("johanbeytell1/Alloy", output)
+        self.assertNotIn("hued-fork", output)
+        self.assertNotIn("Secret", output)
 
 
 if __name__ == "__main__":
