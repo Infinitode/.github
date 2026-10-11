@@ -32,6 +32,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for a later date.
 
 ### Latest changes
+- Wrote a blog post on security updates to the website and new features, as well as `CloakJS`.
 - Updated `CloakJS` to `v1.3.0` and introduced bug fixes and new features.
 - Released [`CloakJS`](https://github.com/Infinitode/CloakJS), a small JavaScript code obfuscator.
 - Updated website with new pricing and MFA authentication available for verified emails and Google sign-ins.
