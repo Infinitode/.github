@@ -30,6 +30,9 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for a later date.
 
 ### Latest changes
+- Released `CloakJS`, a small JavaScript code obfuscator.
+- Updated website with new pricing and MFA authentication available for verified emails and Google sign-ins.
+- Updated general website security and user account security.
 - Updated `Python Projects` with new projects.
 - Added 2 new `Bolt Templates` to the website.
 - Fixed compatibility between `qrforge` and earlier releases of Python (3.8-3.11).
