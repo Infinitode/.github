@@ -22,10 +22,8 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ### Upcoming changes
 
 - Updates to KeySynth Studio to improve performance and usability, adding new features as well.
-- Updates to all outdated packages.
 - New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
 - New `AI APIs`.
-- Updates to `pricing` information and a total overhaul of the `website`.
 - New `3D assets`, `samples`, and `models` on our website or via a dedicated app.
 
 > [!NOTE]
