@@ -30,6 +30,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for a later date.
 
 ### Latest changes
+- Updated `Alloy` with new components, variants, and more.
 - Removed `Developer API Keys` from the website, documentation, and APIs. Developer API calls are no longer used. Instead, head to the live API playground (https://infinitode.netlify.app/api/playground), where you can test APIs without using your key.
 - Wrote a blog post on security updates to the website and new features, as well as `CloakJS`.
 - Updated `CloakJS` to `v1.3.0` and introduced bug fixes and new features.
