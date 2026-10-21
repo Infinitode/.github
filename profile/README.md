@@ -30,6 +30,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for a later date.
 
 ### Latest changes
+- Updated `Alloy` to `v1.2`. This update introduces layout fixes and component theming. Components can now be themed to match brand colors, allowing for rapid prototyping and testing without leaving the site.
 - Updated `Alloy` with new components, variants, and more.
 - Removed `Developer API Keys` from the website, documentation, and APIs. Developer API calls are no longer used. Instead, head to the live API playground (https://infinitode.netlify.app/api/playground), where you can test APIs without using your key.
 - Wrote a blog post on security updates to the website and new features, as well as `CloakJS`.
