@@ -30,6 +30,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for a later date.
 
 ### Latest changes
+- Updated the website `Experiments` with `Balance Blitz`, a fun WebGL game about balancing items.
 - Updated the website with 5 new `Bolt Templates`.
 - Updated `Alloy` to `v1.2`. This update introduces layout fixes and component theming. Components can now be themed to match brand colors, allowing for rapid prototyping and testing without leaving the site.
 - Updated `Alloy` with new components, variants, and more.
