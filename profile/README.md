@@ -30,6 +30,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- Updated `DeepDefend` to `v0.2.0`. This update fixes several attacks that were not numerically accurate.
 - Updated `PyWebScrapr` documentation on GitBook to reflect the new version and improvements, as well as several guides to detail current limitations and explain changes and package behaviors.
 - Updated `PyWebScrapr` to `v0.1.8` to fix bugs and improve security.
 - Updated the `API documentation` on GitBook to include the 10 new APIs.
