@@ -30,6 +30,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- Updated `Python Projects` with 5 new intermediate projects.
 - Updated `DeepDefend` Package Documentation on GitBook for the new version.
 - Updated `DeepDefend` to `v0.2.0`. This update fixes several attacks that were not numerically accurate.
 - Updated `PyWebScrapr` documentation on GitBook to reflect the new version and improvements, as well as several guides to detail current limitations and explain changes and package behaviors.
