@@ -21,7 +21,6 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
-- Updates to KeySynth Studio to improve performance and usability, adding new features as well.
 - New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
 - New `AI APIs`.
 - New `3D assets`, `samples`, and `models` on our website or via a dedicated app.
@@ -30,6 +29,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- We've updated KeySynth Studio! After months of work, KeySynth Studio v2.0 is finally available for piano synthesia creators at $9! This is after countless weeks spent overhauling the entire app, including UI work, new features, and GPU migration work. After over 200 commits, the final version is now live on Itch! Check it out: https://infinitode.itch.io/keysynth-studio.
 - Updated `Python Projects` with 5 new intermediate projects.
 - Updated `DeepDefend` Package Documentation on GitBook for the new version.
 - Updated `DeepDefend` to `v0.2.0`. This update fixes several attacks that were not numerically accurate.
