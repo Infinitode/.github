@@ -21,8 +21,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
-- New AI `Hugging Face Spaces`, including models from our Bioset, Helix, Spacelens, Arc, and Acres collections.
-- New `AI APIs`.
+- New AI `experiments` on the website.
 - New `3D assets`, `samples`, and `models` on our website or via a dedicated app.
 
 > [!NOTE]
