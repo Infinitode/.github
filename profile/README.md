@@ -29,6 +29,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- Updated `TailClass` to `v1.0.2`, fixing a few security issues in earlier versions of the package.
 - Updated the website with a new experiment: `Prompt Foundry`. Prompt Foundry is a collection of prompts for LLMs that can be used to build various applications and software. It also includes a small randomizer that can help turn generic prompts into specific instructions for LLMs.
 - Released `TailClass`, an open-source, zero-dependency Tailwind CSS auto-classer for Node.js.
 - We've updated KeySynth Studio! After months of work, KeySynth Studio v2.0 is finally available for piano synthesia creators at $9! This is after countless weeks spent overhauling the entire app, including UI work, new features, and GPU migration work. After over 200 commits, the final version is now live on Itch! Check it out: https://infinitode.itch.io/keysynth-studio.
