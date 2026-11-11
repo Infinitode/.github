@@ -19,6 +19,7 @@ import sys
 import tempfile
 import unittest
 import urllib.error
+from datetime import date, timedelta
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _HERE)
@@ -68,6 +69,16 @@ def pypi_meta(home=None, description=""):
             "description": description,
         }
     }
+
+
+def npm_meta(repository=None, homepage=None, created=None):
+    """npm registry metadata shaped like the real ``GET /{package}`` response."""
+    latest = {"repository": {"type": "git", "url": repository} if repository else None,
+              "homepage": homepage, "bugs": None}
+    meta = {"dist-tags": {"latest": "1.0.2"}, "versions": {"1.0.2": latest}}
+    if created:
+        meta["time"] = {"created": created, "modified": created}
+    return meta
 
 
 def contents_file(name, text):
@@ -141,6 +152,7 @@ def standard_world():
                     repo("Infinitode", "Hued", stars=2, forks=1),
                     repo("Infinitode", "qrforge"),
                     repo("Infinitode", "CloakJS"),
+                    repo("Infinitode", "TailClass"),
                     repo("someone-else", "hued-fork", stars=50),  # not ours, even if listed
                 ]
             ),
@@ -151,6 +163,18 @@ def standard_world():
             "pypi.org/pypi/localshare/json": pypi_meta(home="https://github.com/sunu/localshare"),
             "pypi.org/pypi/alloy/json": http_error(404),
             "pypi.org/pypi/cloakjs/json": http_error(404),
+            "pypi.org/pypi/tailclass/json": http_error(404),
+            # npm: tailclass links back to our repo through a git+ URL;
+            # hued is somebody else's package; cloakjs and friends are not on npm.
+            "registry.npmjs.org/tailclass": npm_meta(
+                repository="git+https://github.com/Infinitode/TailClass.git",
+                created="2026-11-08T10:09:47.000Z",
+            ),
+            "registry.npmjs.org/hued": npm_meta(repository="https://github.com/someone-else/hued"),
+            "registry.npmjs.org/cloakjs": http_error(404),
+            "registry.npmjs.org/qrforge": http_error(404),
+            "registry.npmjs.org/localshare": http_error(404),
+            "registry.npmjs.org/alloy": http_error(404),
             "/repos/Infinitode/qrforge/contents/setup.py": contents_file(
                 "setup.py", "setup(name='qrforge', version='1.0.1')"
             ),
@@ -171,6 +195,7 @@ def standard_text_world(web):
     web.text.update(
         {
             "img.shields.io/pepy/dt/": lambda url, headers: shields_svg("downloads", "1.0k"),
+            "img.shields.io/npm/dt/": lambda url, headers: shields_svg("downloads", "350"),
             "img.shields.io/jsdelivr/gh/hy/infinitode/cloakjs": shields_svg("hits", "250"),
             "img.shields.io/jsdelivr/gh/hy/": shields_svg("hits", "0"),
         }
@@ -238,6 +263,34 @@ class TestParsers(unittest.TestCase):
         self.assertEqual(udb.packaging_names("pyproject.toml", '[project]\nname = "hued"\n'), {"hued"})
         self.assertEqual(udb.packaging_names("setup.cfg", "[metadata]\nname = valx\n"), {"valx"})
 
+    def test_npm_name_lowercases_the_repo_name(self):
+        self.assertEqual(udb.npm_name("TailClass"), "tailclass")
+        self.assertEqual(udb.npm_name("LocalSiteMap"), "localsitemap")
+        self.assertEqual(udb.npm_name("Scikit-learn-Model-Updater"), "scikit-learn-model-updater")
+        self.assertEqual(udb.npm_name("Not A Package"), "not-a-package")
+
+    def test_npm_links_back_accepts_git_urls(self):
+        meta = npm_meta(repository="git+https://github.com/Infinitode/TailClass.git")
+        self.assertTrue(udb.npm_links_back(meta, "Infinitode", "TailClass"))
+        meta = npm_meta(repository="git+ssh://git@github.com/Infinitode/TailClass.git")
+        self.assertTrue(udb.npm_links_back(meta, "infinitode", "tailclass"))
+        self.assertTrue(udb.npm_links_back(npm_meta(homepage="https://github.com/Infinitode/TailClass"), "Infinitode", "TailClass"))
+        # someone else's package, and a longer repo name, must not match
+        self.assertFalse(udb.npm_links_back(npm_meta(repository="https://github.com/someone-else/hued"), "Infinitode", "Hued"))
+        self.assertFalse(udb.npm_links_back(npm_meta(homepage="https://github.com/infinitode/tailclass-tools"), "infinitode", "tailclass"))
+
+    def test_npm_packaging_names_reads_package_json(self):
+        self.assertEqual(udb.npm_packaging_names("package.json", '{"name": "tailclass"}'), {"tailclass"})
+        self.assertEqual(udb.npm_packaging_names("package.json", '{"version": "1.0.0"}'), set())
+        self.assertEqual(udb.npm_packaging_names("package.json", "not json"), set())
+
+    def test_npm_first_day_reads_time_created(self):
+        meta = npm_meta(created="2026-11-08T10:09:47.000Z")
+        self.assertEqual(udb.npm_first_day(meta), date(2026, 11, 8))
+        self.assertIsNone(udb.npm_first_day(npm_meta()), "no time block")
+        self.assertIsNone(udb.npm_first_day({"time": {"created": "not a date"}}))
+        self.assertIsNone(udb.npm_first_day({"time": {"created": ""}}))
+
 
 class TestReadmeRewrite(unittest.TestCase):
     def setUp(self):
@@ -294,7 +347,14 @@ class TestDiscovery(StubMixin, unittest.TestCase):
         names = sorted(r["full_name"] for r in udb.discover_repos())
         self.assertEqual(
             names,
-            ["Infinitode/CloakJS", "Infinitode/Hued", "Infinitode/qrforge", "johanbeytell1/Alloy", "johanbeytell1/LocalShare"],
+            [
+                "Infinitode/CloakJS",
+                "Infinitode/Hued",
+                "Infinitode/TailClass",
+                "Infinitode/qrforge",
+                "johanbeytell1/Alloy",
+                "johanbeytell1/LocalShare",
+            ],
         )
 
     def test_listing_follows_pages(self):
@@ -331,6 +391,199 @@ class TestDiscovery(StubMixin, unittest.TestCase):
         self.assertNotIn("Infinitode/Hued", packages)
         self.assertTrue(any("Infinitode/Hued" in n for n in notes))
 
+    def test_npm_package_must_belong_to_the_repo(self):
+        pairs = {
+            "Infinitode/TailClass": "tailclass",  # registry metadata links back to the repo
+            "Infinitode/Hued": None,  # npm "hued" is someone else's package
+            "Infinitode/CloakJS": None,  # not on npm at all
+        }
+        for full_name, expected in pairs.items():
+            owner, name = full_name.split("/")
+            found = udb.npm_package_for(repo(owner, name), fetch_json=self.web.fetch_json)
+            self.assertEqual(found, expected, full_name)
+
+    def test_npm_package_can_be_declared_by_package_json(self):
+        web = FakeWeb()
+        web.json["registry.npmjs.org/widget"] = npm_meta(homepage="https://example.com")
+        web.json["/repos/Infinitode/Widget/contents"] = [
+            {
+                "type": "file",
+                "name": "package.json",
+                "url": "https://api.github.com/repos/Infinitode/Widget/contents/package.json",
+            }
+        ]
+        web.json["/repos/Infinitode/Widget/contents/package.json"] = contents_file(
+            "package.json", '{"name": "widget"}'
+        )
+        found = udb.npm_package_for(repo("Infinitode", "Widget"), fetch_json=web.fetch_json)
+        self.assertEqual(found, "widget")
+
+        web.json["/repos/Infinitode/Widget/contents/package.json"] = contents_file(
+            "package.json", '{"name": "something-else"}'
+        )
+        self.assertIsNone(udb.npm_package_for(repo("Infinitode", "Widget"), fetch_json=web.fetch_json))
+
+    def test_npm_metadata_pointing_at_another_repo_beats_a_name_match(self):
+        """An unrelated package that merely shares our repo's name is not ours.
+
+        npm's ``localshare`` is someone else's 2019 package while our
+        ``johanbeytell1/LocalShare`` repo's package.json declares that name.
+        """
+        web = FakeWeb()
+        web.json["registry.npmjs.org/localshare"] = npm_meta(
+            repository="git+https://github.com/localshare/localshare.git"
+        )
+        web.json["/repos/johanbeytell1/LocalShare/contents"] = [
+            {
+                "type": "file",
+                "name": "package.json",
+                "url": "https://api.github.com/repos/johanbeytell1/LocalShare/contents/package.json",
+            }
+        ]
+        web.json["/repos/johanbeytell1/LocalShare/contents/package.json"] = contents_file(
+            "package.json", '{"name": "localshare"}'
+        )
+        found = udb.npm_package_for(
+            repo("johanbeytell1", "LocalShare"), fetch_json=web.fetch_json
+        )
+        self.assertIsNone(found)
+
+    def test_discover_npm_maps_repos_to_packages(self):
+        packages, first_days, notes = udb.discover_npm(
+            udb.discover_repos(), fetch_json=self.web.fetch_json
+        )
+        self.assertEqual(packages, {"Infinitode/TailClass": "tailclass"})
+        self.assertEqual(first_days, {"tailclass": date(2026, 11, 8)}, "lifetime start is kept")
+        self.assertEqual(notes, [])
+
+    def test_npm_server_error_is_a_note_not_a_crash(self):
+        self.web.json["registry.npmjs.org/tailclass"] = http_error(500)
+        packages, _, notes = udb.discover_npm(udb.discover_repos(), fetch_json=self.web.fetch_json)
+        self.assertNotIn("Infinitode/TailClass", packages)
+        self.assertTrue(any("Infinitode/TailClass" in n for n in notes))
+
+
+# --- npm downloads ------------------------------------------------------------
+
+
+class TestNpmDownloads(StubMixin, unittest.TestCase):
+    def setUp(self):
+        self.web = FakeWeb()
+        self.install(self.web)
+
+    @staticmethod
+    def _window(url):
+        span = url.split("/point/", 1)[1].split("/", 1)[0]
+        start, end = span.split(":")
+        return date.fromisoformat(start), date.fromisoformat(end)
+
+    def test_all_time_total_is_summed_over_18_month_windows(self):
+        calls = []
+
+        def respond(url, headers):
+            calls.append(url)
+            return {"downloads": 10}
+
+        self.web.json["api.npmjs.org/downloads/point/"] = respond
+        total = udb.npm_range_total("tailclass", today=date(2019, 1, 1))
+        self.assertGreater(len(calls), 1, "the API caps a query at 18 months")
+        self.assertEqual(total, 10 * len(calls))
+        windows = [self._window(url) for url in calls]
+        self.assertEqual(windows[0][0], udb.NPM_FIRST_DAY)
+        self.assertEqual(windows[-1][1], date(2019, 1, 1))
+        for start, end in windows:
+            self.assertLessEqual((end - start).days + 1, udb.NPM_WINDOW_DAYS)
+        for (_, previous_end), (next_start, _) in zip(windows, windows[1:]):
+            self.assertEqual(next_start, previous_end + timedelta(days=1), "no gaps or overlaps")
+
+    def test_a_short_history_needs_a_single_window(self):
+        calls = []
+
+        def respond(url, headers):
+            calls.append(url)
+            return {"downloads": 7}
+
+        self.web.json["api.npmjs.org/downloads/point/"] = respond
+        total = udb.npm_range_total("tailclass", today=date(2015, 1, 11))
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(total, 7)
+
+    def test_walk_starts_at_the_first_publish_day(self):
+        calls = []
+
+        def respond(url, headers):
+            calls.append(url)
+            return {"downloads": 4}
+
+        self.web.json["api.npmjs.org/downloads/point/"] = respond
+        total = udb.npm_range_total(
+            "tailclass", today=date(2026, 11, 11), first_day=date(2026, 11, 8)
+        )
+        self.assertEqual(len(calls), 1, "a four-day-old package needs a single query")
+        self.assertEqual(self._window(calls[0]), (date(2026, 11, 8), date(2026, 11, 11)))
+        self.assertEqual(total, 4)
+
+    def test_first_day_before_npm_data_is_clamped_to_the_floor(self):
+        calls = []
+
+        def respond(url, headers):
+            calls.append(url)
+            return {"downloads": 1}
+
+        self.web.json["api.npmjs.org/downloads/point/"] = respond
+        udb.npm_range_total("python-era", today=date(2015, 2, 1), first_day=date(2010, 1, 1))
+        self.assertEqual(self._window(calls[0])[0], udb.NPM_FIRST_DAY)
+
+    def test_a_package_published_today_queries_only_today(self):
+        calls = []
+
+        def respond(url, headers):
+            calls.append(url)
+            return {"downloads": 99}
+
+        self.web.json["api.npmjs.org/downloads/point/"] = respond
+        totals, failures = udb.npm_totals(
+            ["tailclass"], today=date(2026, 11, 11), first_days={"tailclass": date(2026, 11, 11)}
+        )
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(self._window(calls[0]), (date(2026, 11, 11), date(2026, 11, 11)))
+        self.assertEqual(totals, {"tailclass": 99})
+        self.assertEqual(failures, {})
+
+    def test_a_first_day_after_today_queries_nothing(self):
+        calls = []
+
+        def respond(url, headers):
+            calls.append(url)
+            return {"downloads": 99}
+
+        self.web.json["api.npmjs.org/downloads/point/"] = respond
+        totals, failures = udb.npm_totals(
+            ["tailclass"], today=date(2026, 11, 11), first_days={"tailclass": date(2026, 12, 1)}
+        )
+        self.assertEqual(calls, [])
+        self.assertEqual(totals, {"tailclass": 0})
+        self.assertEqual(failures, {})
+
+    def test_a_window_without_a_count_raises_instead_of_undercounting(self):
+        self.web.json["api.npmjs.org/downloads/point/"] = {"unexpected": 1}
+        with self.assertRaises(ValueError):
+            udb.npm_range_total("tailclass", today=date(2015, 1, 11))
+
+    def test_totals_fall_back_to_shields_when_the_api_fails(self):
+        self.web.json["api.npmjs.org/downloads/point/"] = urllib.error.URLError("offline")
+        self.web.text["img.shields.io/npm/dt/"] = shields_svg("downloads", "1.2k")
+        totals, failures = udb.npm_totals(["tailclass"], today=date(2015, 1, 11))
+        self.assertEqual(totals, {"tailclass": 1200})
+        self.assertEqual(failures, {})
+
+    def test_totals_report_a_failure_when_every_source_fails(self):
+        self.web.json["api.npmjs.org/downloads/point/"] = urllib.error.URLError("offline")
+        self.web.text["img.shields.io/npm/dt/"] = urllib.error.URLError("offline")
+        totals, failures = udb.npm_totals(["tailclass"], today=date(2015, 1, 11))
+        self.assertEqual(totals, {})
+        self.assertIn("tailclass", failures)
+
 
 # --- collection ---------------------------------------------------------------
 
@@ -339,18 +592,30 @@ class TestCollect(StubMixin, unittest.TestCase):
     def setUp(self):
         self.web = standard_text_world(standard_world())
         self.web.json["api.pepy.tech"] = lambda url, headers: {"total_downloads": 1_000}
+        self.web.json["api.npmjs.org/downloads/point/"] = {"downloads": 100}
         self.install(self.web)
 
+    def _collect(self):
+        # A fixed "today" keeps the npm window count (and so the total) stable.
+        # tailclass was published 2026-11-08, so its lifetime is a single window.
+        return udb.collect(
+            api_key="k",
+            fetch_json=self.web.fetch_json,
+            fetch_text=self.web.fetch_text,
+            today=date(2026, 11, 11),
+        )
+
     def test_stars_and_forks_are_summed_over_counted_repos(self):
-        result = udb.collect(api_key="k", fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+        result = self._collect()
         self.assertEqual(result["stars"], 1 + 1 + 2)  # LocalShare, Alloy, Hued; Secret and the foreign fork excluded
         self.assertEqual(result["forks"], 1)
 
-    def test_downloads_come_from_pypi_and_jsdelivr(self):
-        result = udb.collect(api_key="k", fetch_json=self.web.fetch_json, fetch_text=self.web.fetch_text)
+    def test_downloads_come_from_pypi_npm_and_jsdelivr(self):
+        result = self._collect()
         self.assertEqual(result["pypi"], {"hued": 1_000, "qrforge": 1_000})
+        self.assertEqual(result["npm"], {"tailclass": 100})
         self.assertEqual(result["jsdelivr"]["infinitode/cloakjs"], 250)
-        self.assertEqual(result["downloads"], 1_000 + 1_000 + 250)
+        self.assertEqual(result["downloads"], 1_000 + 1_000 + 100 + 250)
         self.assertNotIn("localshare", result["pypi"])
 
 
@@ -396,6 +661,8 @@ class TestMain(StubMixin, unittest.TestCase):
     def _healthy_web(self):
         web = standard_text_world(standard_world())
         web.json["api.pepy.tech"] = lambda url, headers: {"total_downloads": 1_000}
+        # Force the npm fallback so the total does not depend on today's date.
+        web.json["api.npmjs.org/downloads/point/"] = http_error(500)
         return web
 
     def test_listing_failure_changes_nothing(self):
@@ -425,8 +692,9 @@ class TestMain(StubMixin, unittest.TestCase):
     def test_happy_path_with_pepy_key_is_exact(self):
         code, output = self._run(self._healthy_web(), env={"PEPY_API_KEY": "k"})
         self.assertEqual(code, 0, output)
-        # PyPI: hued + qrforge at 1,000 each (pepy); jsDelivr: CloakJS 250, the rest 0.
-        self.assertIn(f"Total%20Downloads-{udb.format_count(2_250)}-", self._read(self.readme))
+        # PyPI: hued + qrforge at 1,000 each (pepy); npm: tailclass 350 from the
+        # shields fallback; jsDelivr: CloakJS 250, the rest 0.
+        self.assertIn(f"Total%20Downloads-{udb.format_count(2_600)}-", self._read(self.readme))
 
     def test_dry_run_changes_nothing(self):
         code, output = self._run(self._healthy_web(), argv=["--dry-run"], env={"PEPY_API_KEY": "k"})
