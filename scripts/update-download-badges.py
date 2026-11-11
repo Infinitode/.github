@@ -17,6 +17,16 @@ Downloads
     Same-named packages by other people fail both checks, so they are skipped.
       1. pepy v2 API when PEPY_API_KEY is set (exact counts), otherwise
       2. shields.io ``/pepy/dt`` badge (rounded figures).
+    npm (all-time). Same ownership rule, lowercased (npm names are lowercase):
+    an npm package belongs to a repo when its name matches the repo's and either
+    its registry metadata links back to the repo, or -- only when that metadata
+    names no GitHub repository at all -- the repo's package.json declares the
+    name. Metadata pointing at a different repo is always rejected.
+      1. registry downloads API, summed over 18-month windows from the package's
+         first publish day (a single query may span at most 18 months, and npm
+         has no data before 2015-01-10, so that is the floor),
+      2. shields.io ``/npm/dt`` badge when that is unavailable. Note shields
+         builds that badge from a capped range, so the fallback can undercount.
     jsDelivr (last 12 months). shields.io ``/jsdelivr/gh/hy`` for every counted
     repo. jsDelivr publishes period stats only; there is no all-time figure.
 
@@ -48,6 +58,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
+from datetime import date, timedelta
 
 # --- what gets counted -------------------------------------------------------
 
@@ -61,15 +72,24 @@ GITHUB_API = "https://api.github.com"
 GITHUB_HEADERS = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
 MAX_PAGES = 20
 PACKAGING_FILES = ("pyproject.toml", "setup.py", "setup.cfg")
+NPM_PACKAGING_FILES = ("package.json",)
 
 PYPI_JSON = "https://pypi.org/pypi/{pkg}/json"
 PEPY_V2 = "https://api.pepy.tech/api/v2/projects/{pkg}"
 SHIELDS_PYPI = "https://img.shields.io/pepy/dt/{pkg}"
+SHIELDS_NPM = "https://img.shields.io/npm/dt/{package}"
 SHIELDS_JSDELIVR = "https://img.shields.io/jsdelivr/gh/{period}/{repo}"
+
+NPM_REGISTRY = "https://registry.npmjs.org/{package}"
+NPM_DOWNLOADS_POINT = "https://api.npmjs.org/downloads/point/{start}:{end}/{package}"
+# The point API refuses ranges longer than 18 months, and has no data before
+# this date, so all-time npm totals have to be summed over windows.
+NPM_FIRST_DAY = date(2015, 1, 10)
+NPM_WINDOW_DAYS = 540  # safely under the 18-month (~547 day) limit
 
 # A new total this far below the published one counts as partial data and is
 # refused. 5% absorbs display rounding while still catching a missing source
-# (dropping one of eleven sources moves the total by ~9%).
+# (losing one source, or one chunk of an npm total, moves the total by more).
 DROP_TOLERANCE = 0.05
 
 # Keys that hold an all-time count, highest confidence first.
@@ -92,6 +112,7 @@ _SUFFIX = {"": 1, "k": 1_000, "M": 1_000_000, "B": 1_000_000_000}
 
 _PY_NAME_RE = re.compile(r"""\bname\s*=\s*["']([A-Za-z0-9][A-Za-z0-9._-]*)["']""")
 _CFG_NAME_RE = re.compile(r"^name\s*=\s*([A-Za-z0-9][A-Za-z0-9._-]*)\s*$", re.M)
+_GITHUB_URL_RE = re.compile(r"github\.com[/:]([^/\s]+)/([^/\s#?]+)", re.I)
 
 
 # --- network (the only I/O in this module) -----------------------------------
@@ -224,6 +245,70 @@ def packaging_names(filename, text):
     return set(_PY_NAME_RE.findall(text))
 
 
+def npm_name(repo_name):
+    """The npm package name a repo's name implies.
+
+    npm names are lowercase and may only hold ``a-z 0-9 . _ -``, so the
+    PascalCase repo names map straight across (TailClass -> tailclass).
+    """
+    return re.sub(r"[^a-z0-9._-]+", "-", repo_name.strip().lower()).strip("-._")
+
+
+def normalize_npm_name(name):
+    """npm package names are lowercase; compare them that way."""
+    return name.strip().lower()
+
+
+def npm_github_repos(meta):
+    """Every ``owner/repo`` the npm package's metadata points at on GitHub."""
+    version = (meta.get("dist-tags") or {}).get("latest") or ""
+    latest = (meta.get("versions") or {}).get(version) or meta
+    urls = []
+    for key in ("repository", "homepage", "bugs"):
+        for source in (latest, meta):
+            value = source.get(key)
+            if isinstance(value, dict):
+                value = value.get("url")
+            if isinstance(value, str) and value:
+                urls.append(value)
+    # git+https://github.com/o/r.git and git+ssh://git@github.com:o/r both count
+    text = re.sub(r"\.git\b", "", " ".join(urls), flags=re.I)
+    return {
+        (match.group(1).lower(), match.group(2).lower())
+        for match in _GITHUB_URL_RE.finditer(text)
+    }
+
+
+def npm_links_back(meta, owner, repo):
+    """True if the npm package's metadata links to github.com/owner/repo."""
+    return (owner.lower(), repo.lower()) in npm_github_repos(meta)
+
+
+def npm_first_day(meta):
+    """The day the npm package was first published, or ``None`` if unknown.
+
+    Registry metadata carries a ``time.created`` timestamp. Downloads cannot
+    predate it, so it is the earliest window worth asking the API for.
+    """
+    created = (meta.get("time") or {}).get("created")
+    if not isinstance(created, str) or len(created) < 10:
+        return None
+    try:
+        return date.fromisoformat(created[:10])
+    except ValueError:
+        return None
+
+
+def npm_packaging_names(filename, text):
+    """Package names a package.json declares."""
+    try:
+        meta = json.loads(text)
+    except ValueError:
+        return set()
+    name = meta.get("name") if isinstance(meta, dict) else None
+    return {name} if isinstance(name, str) and name.strip() else set()
+
+
 def render_block(values):
     """The badge block. *values* is a list of ``(label, badge_text)`` pairs."""
     lines = [START_MARK]
@@ -277,9 +362,16 @@ def discover_repos(fetch_json=None, token=None):
     return repos
 
 
-def declared_names(owner, repo, fetch_json=None, token=None):
-    """Package names declared by the repo's own packaging files."""
+def declared_names(
+    owner, repo, fetch_json=None, token=None, files=PACKAGING_FILES, parse=None
+):
+    """Package names declared by the repo's own packaging files.
+
+    *files* and *parse* select the ecosystem: Python's packaging files by
+    default, or ``NPM_PACKAGING_FILES`` with ``npm_packaging_names``.
+    """
     fetch_json = fetch_json or globals()["fetch_json"]
+    parse = parse or packaging_names
     try:
         listing = fetch_json(f"{GITHUB_API}/repos/{owner}/{repo}/contents", github_headers(token))
     except urllib.error.HTTPError as error:
@@ -288,10 +380,10 @@ def declared_names(owner, repo, fetch_json=None, token=None):
         raise
     names = set()
     for item in listing if isinstance(listing, list) else []:
-        if item.get("type") == "file" and item.get("name") in PACKAGING_FILES:
+        if item.get("type") == "file" and item.get("name") in files:
             blob = fetch_json(item["url"], github_headers(token))
             text = base64.b64decode(blob.get("content", "")).decode("utf-8", "replace")
-            names |= packaging_names(item["name"], text)
+            names |= parse(item["name"], text)
     return names
 
 
@@ -324,6 +416,71 @@ def discover_pypi(repos, fetch_json=None, token=None):
         if package:
             packages[repo["full_name"]] = package
     return packages, notes
+
+
+def npm_lookup(repo, fetch_json=None, token=None):
+    """``(package, first_day)`` for the npm package that belongs to *repo*.
+
+    Both are ``None`` when the repo has no package of its own.
+    """
+    fetch_json = fetch_json or globals()["fetch_json"]
+    owner, name = repo["owner"]["login"], repo["name"]
+    package = npm_name(name)
+    if not package:
+        return None, None
+    try:
+        meta = fetch_json(NPM_REGISTRY.format(package=package))
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            return None, None
+        raise
+    if not isinstance(meta, dict):
+        raise ValueError(f"unexpected npm metadata for {package}")
+    if not npm_links_back(meta, owner, name):
+        # Provenance wins over a name match: a package that names some *other*
+        # GitHub repo in its metadata is not ours, even if our package.json
+        # happens to declare the same name (npm/local-share style collisions).
+        if npm_github_repos(meta):
+            return None, None
+        declared = {
+            normalize_npm_name(n)
+            for n in declared_names(
+                owner,
+                name,
+                fetch_json,
+                token,
+                files=NPM_PACKAGING_FILES,
+                parse=npm_packaging_names,
+            )
+        }
+        if package not in declared:
+            return None, None
+    return package, npm_first_day(meta)
+
+
+def npm_package_for(repo, fetch_json=None, token=None):
+    """The npm package that belongs to *repo*, or ``None``."""
+    return npm_lookup(repo, fetch_json=fetch_json, token=token)[0]
+
+
+def discover_npm(repos, fetch_json=None, token=None):
+    """Map ``full_name -> npm package``, plus each package's first day.
+
+    Returns ``(packages, first_days, notes)``, where *first_days* maps a package
+    name to the day it was first published (used to walk only its lifetime).
+    """
+    packages, first_days, notes = {}, {}, []
+    for repo in repos:
+        try:
+            package, first_day = npm_lookup(repo, fetch_json=fetch_json, token=token)
+        except (urllib.error.URLError, ValueError) as error:
+            notes.append(f"{repo['full_name']}: npm lookup skipped ({error})")
+            continue
+        if package:
+            packages[repo["full_name"]] = package
+            if first_day:
+                first_days[package] = first_day
+    return packages, first_days, notes
 
 
 # --- source lookups ----------------------------------------------------------
@@ -362,6 +519,64 @@ def pypi_totals(packages, api_key=None, fetch_json=None, fetch_text=None):
     return totals, failures, sorted(set(notes))
 
 
+def npm_range_total(package, fetch_json=None, today=None, first_day=None):
+    """All-time npm downloads for *package*, summed over 18-month windows.
+
+    The walk starts at the package's first publish day (nothing can predate it)
+    and never earlier than 2015-01-10. The point API refuses any single range
+    longer than 18 months, so the lifetime is covered in windows. A failed or
+    malformed window raises instead of returning a small partial sum.
+    """
+    fetch_json = fetch_json or globals()["fetch_json"]
+    last_day = today or date.today()
+    start = max(NPM_FIRST_DAY, first_day) if first_day else NPM_FIRST_DAY
+    total = 0
+    while start <= last_day:
+        end = min(start + timedelta(days=NPM_WINDOW_DAYS - 1), last_day)
+        payload = fetch_json(
+            NPM_DOWNLOADS_POINT.format(package=package, start=start.isoformat(), end=end.isoformat())
+        )
+        count = find_count(payload)
+        if count is None:
+            raise ValueError(f"no download count in response for {package}")
+        total += count
+        start = end + timedelta(days=1)
+    return total
+
+
+def npm_totals(packages, fetch_json=None, fetch_text=None, today=None, first_days=None):
+    """All-time npm downloads per package, exact where the API answers.
+
+    *first_days* maps a package to its first publish day so that only its own
+    lifetime is queried; packages missing from it are walked from npm's floor.
+    """
+    fetch_json = fetch_json or globals()["fetch_json"]
+    fetch_text = fetch_text or globals()["fetch_text"]
+    first_days = first_days or {}
+    totals, failures = {}, {}
+    for package in packages:
+        errors = []
+        count = None
+        try:
+            count = npm_range_total(
+                package, fetch_json=fetch_json, today=today, first_day=first_days.get(package)
+            )
+        except (urllib.error.URLError, ValueError) as error:
+            errors.append(f"npm api -> {error}")
+        if count is None:  # fallback: shields.io builds this from a capped range
+            try:
+                count = parse_shields_badge(fetch_text(SHIELDS_NPM.format(package=package)))
+            except (urllib.error.URLError, ValueError) as error:
+                errors.append(f"shields.io -> {error}")
+            if count is None and not any("shields.io" in e for e in errors):
+                errors.append("shields.io -> no numeric value in badge")
+        if count is not None:
+            totals[package] = count
+        else:
+            failures[package] = "; ".join(errors) or "unknown error"
+    return totals, failures
+
+
 def jsdelivr_totals(repos, period=JSDELIVR_PERIOD, fetch_text=None):
     """jsDelivr hits per repo (``owner/repo``) for *period* (default: 12 months)."""
     fetch_text = fetch_text or globals()["fetch_text"]
@@ -383,7 +598,7 @@ def jsdelivr_totals(repos, period=JSDELIVR_PERIOD, fetch_text=None):
 # --- collection --------------------------------------------------------------
 
 
-def collect(api_key=None, github_token=None, fetch_json=None, fetch_text=None):
+def collect(api_key=None, github_token=None, fetch_json=None, fetch_text=None, today=None):
     """Gather every download, star and fork figure."""
     fetch_json = fetch_json or globals()["fetch_json"]
     fetch_text = fetch_text or globals()["fetch_text"]
@@ -401,6 +616,18 @@ def collect(api_key=None, github_token=None, fetch_json=None, fetch_text=None):
     )
     notes += pypi_notes
 
+    npm_packages, npm_first_days, npm_notes = discover_npm(
+        repos, fetch_json=fetch_json, token=github_token
+    )
+    notes += npm_notes
+    npm, npm_failures = npm_totals(
+        sorted(set(npm_packages.values())),
+        fetch_json=fetch_json,
+        fetch_text=fetch_text,
+        today=today,
+        first_days=npm_first_days,
+    )
+
     jsdelivr, jsdelivr_failures = jsdelivr_totals(
         [repo["full_name"].lower() for repo in repos], fetch_text=fetch_text
     )
@@ -410,12 +637,14 @@ def collect(api_key=None, github_token=None, fetch_json=None, fetch_text=None):
         "stars": stars,
         "forks": forks,
         "packages": packages,
+        "npm_packages": npm_packages,
         "pypi": pypi,
+        "npm": npm,
         "jsdelivr": jsdelivr,
-        "failures": {**pypi_failures, **jsdelivr_failures},
+        "failures": {**pypi_failures, **npm_failures, **jsdelivr_failures},
         "notes": sorted(set(notes)),
-        "download_sources": len(pypi) + len(jsdelivr),
-        "downloads": sum(pypi.values()) + sum(jsdelivr.values()),
+        "download_sources": len(pypi) + len(npm) + len(jsdelivr),
+        "downloads": sum(pypi.values()) + sum(npm.values()) + sum(jsdelivr.values()),
     }
 
 
@@ -447,8 +676,12 @@ def main(argv=None):
     print(f"  repos    {len(result['repos'])} public repos counted: {', '.join(sorted(result['repos']))}")
     for repo, package in sorted(result["packages"].items()):
         print(f"  package  {repo:<40} -> pypi/{package}")
+    for repo, package in sorted(result["npm_packages"].items()):
+        print(f"  package  {repo:<40} -> npm/{package}")
     for name, count in sorted(result["pypi"].items()):
         print(f"  pypi     {name:<29} {count:>14,}")
+    for name, count in sorted(result["npm"].items()):
+        print(f"  npm      {name:<29} {count:>14,}")
     for name, count in sorted(result["jsdelivr"].items()):
         print(f"  jsdelivr {name:<29} {count:>14,}")
     for name, reason in sorted(result["failures"].items()):

@@ -10,6 +10,12 @@ name: Update profile totals
 #   PyPI          - packages that belong to a repo (verified by a link back to
 #                   the repo or by the repo's packaging file). Rounded shields.io
 #                   figures by default; set PEPY_API_KEY for exact counts.
+#   npm           - packages that belong to a repo (same verification, via the
+#                   registry metadata or the repo's package.json). Exact all-time
+#                   counts from the registry downloads API, summed over
+#                   consecutive 18-month windows from the package's first publish
+#                   day (npm has no data before 2015-01-10); falls back to the
+#                   rounded shields.io /npm/dt badge if the API is down.
 #   jsDelivr      - shields.io /jsdelivr/gh/hy badge for every repo; hits over
 #                   the last 12 months (there is no all-time jsDelivr figure).
 #
