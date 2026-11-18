@@ -23,303 +23,303 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 ## Changes
 ### Upcoming changes
 
-- New AI `experiments` on the website.
-- New `3D assets`, `samples`, and `models` on our website or via a dedicated app.
+- New AI [experiments](https://infinitode.netlify.app/experiments) on the [website](https://infinitode.netlify.app).
+- New 3D assets, samples, and models on our [website](https://infinitode.netlify.app) or via a dedicated app.
 
 > [!NOTE]
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
-- Updated `Hued` to `v1.1.0`.
-- Updated `PyAutoPlot` to `v1.1.1`. This version includes fixes for data handling, partial themes, and plotting for empty columns and header-only CSVs.
-- Updated `LocalSiteMap` to `v2.1.0`. This includes a ton of bug fixes and new CLI features with glob exclusion support.
-- Updated `ValX` to `v0.2.7`. Improved redactions and profanity filtering, fixed Finnish handling, and the filtering models load on first use, not on first import.
-- Updated `FuncProfiler` to `v1.3.0`. This version includes many bug fixes and improvements to profiling and exports. Also updated the GitBook documentation for FuncProfiler.
-- Updated `BlurJS` to `v1.8`, supporting live editing, keyframe cleanup, animation fixes, styling fixes, interactive fixes, support for reduced motion, and more browser tests. Also updated the BlurJS GitBook documentation.
-- Updated `Bolt Templates` to include 2 new templates.
-- Updated `DupliPy` to `v0.2.7` and updated GitBook documentation to detail the latest version changes, including speed-ups for NLTK downloads and fixed similarity bugs.
-- Updated `LocalShare` to `v2.2`, implementing speed-ups for file transfers and LAN Direct support for even faster transfers between local devices on the same network.
-- Updated `TailClass` to `v1.0.2`, fixing a few security issues in earlier versions of the package.
-- Updated the website with a new experiment: `Prompt Foundry`. Prompt Foundry is a collection of prompts for LLMs that can be used to build various applications and software. It also includes a small randomizer that helps turn generic prompts into specific LLM instructions.
-- Released `TailClass`, an open-source, zero-dependency Tailwind CSS auto-classer for Node.js.
-- We've updated KeySynth Studio! After months of work, KeySynth Studio v2.0 is finally available for piano synthesia creators at $9! This is after countless weeks spent overhauling the entire app, including UI work, new features, and GPU migration work. After over 200 commits, the final version is now live on Itch! Check it out: https://infinitode.itch.io/keysynth-studio.
-- Updated `Python Projects` with 5 new intermediate projects.
-- Updated `DeepDefend` Package Documentation on GitBook for the new version.
-- Updated `DeepDefend` to `v0.2.0`. This update fixes several attacks that were not numerically accurate.
-- Updated `PyWebScrapr` documentation on GitBook to reflect the new version and improvements, as well as several guides to detail current limitations and explain changes and package behaviors.
-- Updated `PyWebScrapr` to `v0.1.8` to fix bugs and improve security.
-- Updated the `API documentation` on GitBook to include the 10 new APIs.
-- Updated the website with 10 new APIs and a new blog post, and added the new APIs' OpenAPI `YAML` files. We also updated the API playground to include the APIs.
-- Updated `Python Projects` to fix a bug in Beginner Project 14 that silently overwrites duplicate contacts, thanks to [@SVarnavi06](https://github.com/SVarnavi06) for reporting it.
-- Updated the website `Experiments` with `Balance Blitz`, a fun WebGL game about balancing items.
-- Updated the website with 5 new `Bolt Templates`.
-- Updated `Alloy` to `v1.2`. This update introduces layout fixes and component theming. Components can now be themed to match brand colors, allowing for rapid prototyping and testing without leaving the site.
-- Updated `Alloy` with new components, variants, and more.
-- Removed `Developer API Keys` from the website, documentation, and APIs. Developer API calls are no longer used. Instead, head to the live API playground (https://infinitode.netlify.app/api/playground), where you can test APIs without using your key.
-- Wrote a blog post on security updates to the website and new features, as well as `CloakJS`.
-- Updated `CloakJS` to `v1.3.0` and introduced bug fixes and new features.
-- Released [`CloakJS`](https://github.com/Infinitode/CloakJS), a small JavaScript code obfuscator.
-- Updated website with new pricing and MFA authentication available for verified emails and Google sign-ins.
-- Updated general website security and user account security.
-- Updated `Python Projects` with new projects.
-- Added 2 new `Bolt Templates` to the website.
-- Fixed compatibility between `qrforge` and earlier releases of Python (3.8-3.11).
-- Updated the documentation to include `qrforge`.
-- Released `qrforge`, a Python library for customizing and creating QR codes easily.
-- Updated the website with 2 new `Bolt Templates`, a new blog post about `Scriptify`, and updated Scriptify's app page.
-- Updated `Scriptify` with new improvements and major file size reductions.
-- Huge updates for `NotionGrid`, our infinite note-taking and planning app, including new AI features.
-- Updated `LocalShare` with enhancements in transfer speed, connection stability, and a UI overhaul. Also improved security.
-- Updated `PyWebScrapr` to `v0.1.7` to improve performance by speeding up similarity detection in text.
-- Updated the `website` with improved renders.
-- Updated the `OPEN-ARC` website to look much cleaner. View it here: https://open-arc.netlify.app/.
-- Updated the website with a huge website redesign and added built-in multilingual support.
-- Added 2 new `Bolt Templates`.
-- Updated `Python Projects` with 6 new projects.
-- Updated the website with a new blog post about `CodeSafe` and added 2 new `Bolt Templates` to the website.
-- Fixed the `CodeSafe` README.
-- Updated `CodeSafe's documentation` to reflect recent changes.
-- Fixed a critical security vulnerability in `CodeSafe v0.0.1-0.0.4` that can be used to bypass the sandbox environment and allow arbitrary code execution. Upgrade to newer versions of `CodeSafe (v0.0.5)` or later. A huge thanks to [@hkmj19](https://github.com/hkmj19)/[Linkedin](https://www.linkedin.com/in/hemanth-kumar-mj-24b50a256/) for finding and reporting this vulnerability.
-- Updated `Bolt Templates` with another new desktop template.
-- Updated the website with a new template on `Bolt Templates` and added a blog post about the changes to `OPEN-ARC`.
-- Updated `OPEN-ARC` with new projects for basic data exploration and manipulation.
-- Updated [`Kode Magazine`](https://kode-magazine.netlify.app/) with new articles and included new news.
-- Updated `Python Projects` and merged changes from [#15](https://github.com/Infinitode/Python-Projects/pull/15/).
-- Updated all repositories to have sponsor links and Ko-Fi links.
-- Closed issue #12 in `Python Projects`. Reviewed and closed a pull request relating to the issue.
-- Updated `Bolt Templates` with 2 new templates.
-- Improved some layouts on the website and updated all OpenAPI pages on the website with new layouts.
-- Updated the documentation pages on GitBook.
-- Updated `LocalShare` to fix file chunking and sending.
-- Fixed and updated `LocalShare` with new updates, including better chunking and file verification to catch corrupted files.
-- Fixed ugly buttons on the website, updated the hero sections, and added 3 new `Bolt Templates` to the website.
-- Updated `Kode Magazine` with new articles and news. View the magazine at: https://kode-magazine.netlify.app.
-- Updated and improved `OPEN-ARC's` website with a completely new UI and even more project detail views.
-- Updated `OPEN-ARC` with a new project.
-- Added a new `Bolt Template` for mobile to the website.
-- Updated the website `Experiments`, `Apps`, and `Bolt Templates` pages with new donation cards.
-- Moved the `Material Library` from the website to an open-source repository on GitHub for easier access. It is still available on the website, but the download links now redirect to GitHub.
-- Updated `Bolt Templates` with 2 new templates.
-- Created 2 new `Bolt Templates` for the website.
-- Updated `Python Projects`.
-- Added `Brand Lab` to the website. A full web experiment for complete brand testing, using random logos, colors, fonts, and more.
-- Updated the website: fixed a bug in `pricing` and added a new blog post about the new experiments and templates.
-- Updated the `BlurJS` documentation on GitBook.
-- Updated `BlurJS` to `v1.7`, including dynamic `/blur` detection and more animation and interaction support.
-- Updated most repositories with Sponsor buttons to help support our team.
-- Fixed the broken `404` page on the website.
-- Added `Typesite Lab` to the website to test font pairings on a live site! View the experiment here: https://infinitode.netlify.app/experiments/typesite-lab.
-- Updated the website with new sections, links, and more.
-- Added `Orb Studio` to the `Experiments`. Orb Studio is an interactive liquid audio visualizer with full customizability, running locally in the browser.
-- Updated `Bolt Templates` on the website with 2 more free website templates.
-- Updated documentation of `LocalSiteMap`.
-- Updated `LocalSiteMap` to `v2.0.0` following major bug fixes, performance improvements, and new features. It can also now include custom files, not just `.htm` or `.html`.
-- Updated `Python Projects` with 1 new intermediate project and 2 beginner projects. Also added an installation guide for Python & VSCode and a new file explorer project by @Ericwasepic127.
-- Updated `Kode Magazine` with 2 new articles and more news posts.
-- Updated `Funcprofiler` to `v1.2.0` with new performance improvements to improve exports and profiling, while reducing overhead.
-- Updated the website with 3 new tools on the apps page: JSON formatter, Base64 encoder, and a case converter.
-- Updated `KeySynth Studio` to `v1.1`! This includes more performance improvements and even more customizability! Learn more: https://infinitode.itch.io/keysynth-studio/devlog/1567899/keysynth-studio-v11.
-- Updated the website with new project links and fixed layout and animation performance issues.
-- Updated `FAQs` with more common questions surrounding KeySynth Studio.
-- Updated `Kode Magazine` with new articles and news posts.
-- Updated the website with a new blog post on KeySynth Studio! KeySynth Studio will be on sale from the 24th of June 2026 to the 6th of July 2026.
-- Released `KeySynth Studio`! KeySynth Studio is a premium piano Synthesia MIDI visualizer built for all creators. View it on our official itch.io page: https://infinitode.itch.io/, or view it directly: https://infinitode.itch.io/keysynth-studio.
-- Updated `LocalShare` with: new UI, staggered backoff for discovery mode, and bug fixes to avoid ID collisions.
-- Updated `Python Projects` with 3 new beginner projects and solutions.
-- We launched `Kode Magazine`! A tech and AI magazine with weekly updates: https://kode-magazine.netlify.app.
-- We have released `Bioset CCCM (Chest Cancer Classification Model)`: View and use on [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Bioset-CCCM), or use [locally](https://infinitode.netlify.app/experiments/bioset-cccm/).
-- We have posted a new blog post. Read more about it here: https://infinitode.netlify.app/blog/introducing-bioset-cccm-on-device-chest-cancer-classification.
-- Huge website UI update, including overall hero improvements, navigation, and footer improvements. Along with UI, we also worked on performance and responsiveness. We also finally implemented a "Sign in with Google" button.
-- Updated `CodeSafe` to `v0.0.4`. CodeSafe is now much more optimized and efficient, with a `10x` speedup for safe evals, byte support, and faster encryption/decryption.
-- Updated `Dungen API` and related documentation to feature the new models, and updated the API to allow access to the new models.
-- Updated `HF Space` for `Dungen`, now features optimized generation and even more models.
-- Updated `Dungen AI` on the web to `v1.4`. Now features 51 game name generation models that run locally.
-- Updated `Dungen` to version `1.4` on the web, featuring 51 games for generating names in its style.
-- Wrote a new blog post about `Dungen` locally in the browser, and why we moved to local browser-based software instead of traditional software.
-- Updated the website with the new `Dungen` and `Dungen AI` local web experiments! Head on over to https://infinitode.netlify.app/experiments to test them locally.
-- Updated `Distributables` with the new deprecated notices.
-- `Synthdat` is now deprecated. Distributables and app pages will continue to function, but we are discontinuing maintenance and updates for them.
-- We have retired all locally based software versions of `Dungen`, including `Dungen AI` and `Dungen for Android`. New and updated web-based versions will replace these. This change will enable us to roll out updates more frequently and effectively to all our users.
-- Released `FastEDSR 2x` for super-fast image upscaling tasks using AI. Use for free on the [website](https://infinitode.netlify.app) or on [Hugging Face](https://huggingface.co/spaces/InfinitodeLTD/FastEDSR).
-- Massive website update: Updated UI, layouts, and styles. We also completely overhauled forms and user dashboards, as well as pricing and other pages.
-- Updated the blog on the website and created 2 new web apps in `/apps` on the website.
-- Updated `DeepDefend` documentation on GitBook.
-- Updated `DeepDefend` to version `0.1.5`. The package now includes fixes for some defenses and even more attack and defense techniques.
-- Updated `DupliPy` package documentation on GitBook.
-- Updated `DupliPy` to version `0.2.6`. DupliPy now includes CSV augmentation, data balancing, and new doc-lints and type hints for Python 3.10 and above.
-- Updated `BlurJS` documentation on GitBook.
-- Updated `BlurJS` to version `1.6` with major performance optimizations and expanded test coverage.
-- Updated `Python Projects` with difficulty ratings for every project and quick navigation to browse to each project.
-- Fixed missing template in `Bolt Templates`, and created a new 3D Portfolio website for `Bolt Templates`.
-- Published a new blog post about the local video compressor experiment, detailing how it works behind the scenes.  
-- Created a new `Video Compressor` experiment that compresses videos directly in your browser, without the need for uploads.
-- Updated `Bolt Templates` with a new template for a news outlet website.
-- Added `Alloy` to the experiments page on our website.
-- Updated the `FAQs` on GitBook about experiments ([Infinitode/Experiments](https://infinitode.netlify.app/experiments)) use and model use.
-- Published `Alloy UI`! A fully open-source Tailwind V4 component and website layout design library. View source at: https://github.com/Infinitode/Alloy.
-- Updated `Bolt Templates` with a new template app for mobile and optimized images for the website.
-- Updated `Bolt Templates` with a new space research agency website template using modern Tailwind V4! Download and use for free: https://infinitode.netlify.app/bolt-templates.
-- Updated `LocalShare`! LocalShare can now automatically detect local devices by IP address, enabling faster connections and easier sharing across browsers and devices. Additionally, LocalShare now allows users to accept or decline connections during handshakes, enhancing both reliability and privacy. You can access it at https://local-share.netlify.app or view the source code on GitHub.
-- Updated `Python Projects` with 6 new projects.
-- New blog post about how AI Music affects original artists and overwhelms streaming platforms.
-- Fixed blog link rendering on the website for smaller screens.
-- Updated `PWLDS` to `v1.2` with 5 million new passwords.
-- Created a new blog post for `PyAutoPlot v1.1.0`.
-- Updated blog articles display to be more accessible and cohesive.
-- Fixed a bug in our `Latest Changes` blog section, where URLs weren't properly displayed.
-- Updated `PyAutoPlot` to `v1.1.0`, with new plots, cleanup functions, smarter date detection, and new export formats.
-- New blog post about Colorlib.
-- Release of `Colorlib`, a massive library of colors and palettes for designers.
+- Updated [Hued](https://github.com/Infinitode/Hued) to [`1.1.0`](https://pypi.org/project/hued/1.1.0/) ([release](https://github.com/Infinitode/Hued/releases/tag/1.1.0), [docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/hued-package-documentation), [changelog](https://github.com/Infinitode/Hued/blob/main/CHANGELOG.md)). A correctness and color-science release: it fixes the `xyz_to_rgb` crash and the sRGB transfer-function bug that skewed luminance and contrast results, adds CIE 1976 L\*a\*b\* conversions, CIEDE2000 `delta_e` and `check_wcag_contrast`, repairs the named-color catalog so all 148 CSS colors resolve, and moves packaging to PEP 621 with PyPI Trusted Publishing and attestations.
+- Updated [PyAutoPlot](https://github.com/Infinitode/PyAutoPlot) to [`1.1.1`](https://pypi.org/project/pyautoplot/1.1.1/) ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/pyautoplot-package-documentation)). This version fixes date detection for sparse and mixed-format timestamps, analysis and plotting for empty columns and header-only CSVs, JSON exports with non-finite numbers, partial themes, and `dpi`/`bins` handling. Reports no longer close figures they did not create, `show=False` supports file-only plotting, and releases now use PyPI Trusted Publishing with per-file attestations.
+- Updated [LocalSiteMap](https://github.com/Infinitode/LocalSiteMap) to [`2.1.0`](https://pypi.org/project/localsitemap/2.1.0/) ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/localsitemap-package-documentation)). This includes a ton of bug fixes and new CLI features: `localsitemap` and `python -m localsitemap` with glob exclusions like `["draft-*", "*.bak"]`, percent-encoded URLs, case-insensitive extension matching, deterministic and deduplicated output, atomic writes and a much faster streaming XML writer. Python 3.9+ is now required, and releases are published with Trusted Publishing and PEP 740 attestations.
+- Updated [ValX](https://github.com/Infinitode/ValX) to [`0.2.7`](https://pypi.org/project/valx/0.2.7/) ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/valx-package-documentation)). Sensitive-information redaction now uses exact match positions and merges overlaps, parenthesized phone area codes and signed coordinates are detected, profanity filtering supports the Finnish `FI` alias and punctuation in custom terms, and the bundled hate-speech models load on first use instead of on import. Python 3.10+ is now required.
+- Updated [FuncProfiler](https://github.com/Infinitode/FuncProfiler) to [`1.3.0`](https://pypi.org/project/funcprofiler/1.3.0/) ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/funcprofiler-package-documentation)). This version fixes leaked profiling state after exceptions, corrupted nested and recursive measurements, double extensions on exports, and invalid YAML/TOML/XML/HTML output, and adds a `profile_block` context manager, aggregated `get_stats`/`export_summary` statistics, async and generator support, and a `Percent` hotspot column.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) to `1.8` ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation)). This release supports live BlurJS edits, reclaims unused keyframes, fixes animation, styling and interaction handling, respects reduced-motion preferences, and adds more browser tests.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) to include 2 new templates.
+- Updated [DupliPy](https://github.com/Infinitode/DupliPy) to [`0.2.7`](https://pypi.org/project/duplipy/0.2.7/) ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/duplipy-package-documentation)). NLTK resources are checked locally before downloading, NLTK 3.9+ resource names and offline regex tokenization are supported, and this release fixes a `ZeroDivisionError` in `sorensen_dice_coefficient`, `mean_squared_error` across all image channels, and `named_entity_recognition` returning a tree. It also fixes the source distribution and requires Python 3.10+.
+- Updated [LocalShare](https://github.com/johanbeytell1/LocalShare) to `v2.2` ([live demo](https://local-share.netlify.app)). This implements speed-ups for file transfers and a new Direct LAN Turbo Engine, using multi-lane raw WebRTC plus an optional LAN TCP server, for even faster transfers between local devices on the same network.
+- Updated [TailClass](https://github.com/Infinitode/TailClass) to [`v1.0.2`](https://github.com/Infinitode/TailClass/releases/tag/v1.0.2) ([npm](https://www.npmjs.com/package/tailclass), [docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/tailclass-package-documentation)). This fixes a symlink path-traversal issue and unsafe `revert --clean` deletions in earlier versions of the package, on top of the `v1.0.1` hardening and single-sourced version.
+- Updated the website with a new experiment: [Prompt Foundry](https://infinitode.netlify.app/experiments/prompt-foundry/). Prompt Foundry is a collection of 400+ prompts for LLMs that can be used to build various applications and software. It also includes a small randomizer that helps turn generic prompts into specific LLM instructions.
+- Released [TailClass](https://github.com/Infinitode/TailClass), an open-source, zero-dependency Tailwind CSS auto-classer for Node.js with a CLI, semantic component naming, custom mapping dictionaries and centralized stylesheet generation. Available on [npm](https://www.npmjs.com/package/tailclass), with [docs on GitBook](https://infinitode-docs.gitbook.io/documentation/package-documentation/tailclass-package-documentation).
+- We've updated [KeySynth Studio](https://infinitode.itch.io/keysynth-studio)! After months of work and over 200 commits, KeySynth Studio v2.0 is finally available for piano Synthesia creators at a permanent $9. The update overhauls the entire app with an animated 3D piano, a redesigned workspace, expanded effects and GPU improvements — read the [release post](https://infinitode.netlify.app/blog/keysynth-studio-2-0-release/).
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 5 new intermediate projects.
+- Updated the [DeepDefend](https://github.com/Infinitode/DeepDefend) documentation on GitBook for `v0.2.0`, including [what changed in 0.2.0](https://infinitode-docs.gitbook.io/documentation/package-documentation/deepdefend-package-documentation/whats-new-in-0.2.0), a [migration guide from 0.1.x](https://infinitode-docs.gitbook.io/documentation/package-documentation/deepdefend-package-documentation/migration-from-0.1.x) and [limitations and responsible use](https://infinitode-docs.gitbook.io/documentation/package-documentation/deepdefend-package-documentation/limitations-and-responsible-use).
+- Updated [DeepDefend](https://github.com/Infinitode/DeepDefend) to [`v0.2.0`](https://pypi.org/project/deepdefend/0.2.0/) ([changelog](https://github.com/Infinitode/DeepDefend/blob/master/CHANGELOG.md)). This update fixes several attacks that were not numerically accurate — `jsma`, `spsa`, `ead`, `cw` and `deepfool` — and documents the breaking changes for users upgrading from `0.1.x`.
+- Updated the [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr) documentation on GitBook to reflect the new version and improvements, with new guides covering [options and safety limits](https://infinitode-docs.gitbook.io/documentation/package-documentation/pywebscrapr-package-documentation/pywebscrapr-options-and-safety), [text modes and output formats](https://infinitode-docs.gitbook.io/documentation/package-documentation/pywebscrapr-package-documentation/pywebscrapr-text-modes-and-output-formats), [logging](https://infinitode-docs.gitbook.io/documentation/package-documentation/pywebscrapr-package-documentation/pywebscrapr-logging), [known limitations](https://infinitode-docs.gitbook.io/documentation/package-documentation/pywebscrapr-package-documentation/pywebscrapr-known-limitations) and [upgrading to 0.1.8](https://infinitode-docs.gitbook.io/documentation/package-documentation/pywebscrapr-package-documentation/pywebscrapr-upgrading).
+- Updated [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr) to [`v0.1.8`](https://pypi.org/project/pywebscrapr/0.1.8/) to fix bugs and improve security. Requests now enforce timeouts, page and image size caps, redirect limits, crawl depth, global rate limiting and private-address blocking, and the package gained offline tests in CI. Python 3.9+ is required.
+- Updated the [API documentation](https://infinitode-docs.gitbook.io/documentation/api-documentation) on GitBook to include the 10 new APIs.
+- Updated the [website](https://infinitode.netlify.app) with [10 new APIs](https://infinitode.netlify.app/blog/introducing-ten-new-apis/) and a new blog post, and added the new APIs' OpenAPI `YAML` files. We also updated the [API playground](https://infinitode.netlify.app/api/playground/) to include the APIs.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) to fix a bug in Beginner Project 14 that silently overwrites duplicate contacts, thanks to [@SVarnavi06](https://github.com/SVarnavi06) for reporting it.
+- Updated the website [Experiments](https://infinitode.netlify.app/experiments) with [Balance Blitz](https://infinitode.netlify.app/experiments/balance-blitz/), a fun WebGL game about balancing items on a railed seesaw through 40 worlds.
+- Updated the website with 5 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates).
+- Updated [Alloy](https://github.com/johanbeytell1/Alloy) to `v1.2` ([live site](https://alloyui.netlify.app)). This update introduces layout fixes, a themed search bar, accent clash handling, opacity fixes and component theming. Components can now be themed to match brand colors, allowing for rapid prototyping and testing without leaving the site.
+- Updated [Alloy](https://github.com/johanbeytell1/Alloy) with new components, variants, and more.
+- Removed `Developer API Keys` from the website, documentation, and APIs. Developer API calls are no longer used. Instead, head to the live [API playground](https://infinitode.netlify.app/api/playground/), where you can test APIs without using your key.
+- Wrote a [blog post](https://infinitode.netlify.app/blog/security-updates-and-introducing-cloakjs/) on security updates to the website and new features, as well as [CloakJS](https://github.com/Infinitode/CloakJS).
+- Updated [CloakJS](https://github.com/Infinitode/CloakJS) to `v1.3.0` ([PR #2](https://github.com/Infinitode/CloakJS/pull/2), [docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/cloakjs-package-documentation)) and introduced bug fixes and new features, including a real extreme mode and much stronger obfuscation.
+- Released [CloakJS](https://github.com/Infinitode/CloakJS), a single-file, dependency-free JavaScript obfuscator for the browser and Node.js with identifier mangling, string encryption and control-flow options ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/cloakjs-package-documentation)).
+- Updated [website](https://infinitode.netlify.app) with new pricing and MFA authentication available for verified emails and Google sign-ins.
+- Updated general [website](https://infinitode.netlify.app) security and user account security.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with new projects.
+- Added 2 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates) to the website.
+- Fixed compatibility between [qrforge](https://github.com/Infinitode/qrforge) and earlier releases of Python (3.8-3.11).
+- Updated the documentation to include [qrforge](https://infinitode-docs.gitbook.io/documentation/package-documentation/qrforge-package-documentation).
+- Released [qrforge](https://github.com/Infinitode/qrforge), a Python library for customizing and creating QR codes easily, with custom module shapes, gradients, shaders, logos and textures, exporting to PNG, SVG, PDF, terminal ANSI, ASCII or Pillow ([PyPI](https://pypi.org/project/qrforge/), [docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/qrforge-package-documentation)).
+- Updated the website with 2 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates), a [new blog post about Scriptify](https://infinitode.netlify.app/blog/scriptify-v1-2-1-release/), and updated Scriptify's app page.
+- Updated [Scriptify](https://github.com/Infinitode/Scriptify) with new improvements and major file size reductions.
+- Huge updates for [NotionGrid](https://notiongrid.netlify.app/), our infinite note-taking and planning app, including new AI features.
+- Updated [LocalShare](https://github.com/johanbeytell1/LocalShare) with enhancements in transfer speed, connection stability, and a UI overhaul. Also improved security.
+- Updated [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr) to [`v0.1.7`](https://pypi.org/project/pywebscrapr/0.1.7/) to improve performance by speeding up similarity detection in text.
+- Updated the [website](https://infinitode.netlify.app) with improved renders.
+- Updated the [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) website ([open-arc.netlify.app](https://open-arc.netlify.app/)) to look much cleaner.
+- Updated the [website](https://infinitode.netlify.app) with a huge redesign and added built-in multilingual support.
+- Added 2 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates).
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 6 new projects.
+- Updated the website with a new blog post about [CodeSafe](https://github.com/Infinitode/CodeSafe) and added 2 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates) to the website.
+- Fixed the [CodeSafe](https://github.com/Infinitode/CodeSafe) README.
+- Updated [CodeSafe's documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation/codesafe-package-documentation) to reflect recent changes.
+- Fixed a critical security vulnerability in [CodeSafe `v0.0.1`–`v0.0.4`](https://github.com/Infinitode/CodeSafe/security/advisories/GHSA-7gp8-3j6q-v4h8) that could be used to bypass the sandbox environment and allow arbitrary code execution. Upgrade to [CodeSafe `v0.0.5`](https://pypi.org/project/codesafe/0.0.5/) or later. A huge thanks to [@hkmj19](https://github.com/hkmj19)/[Linkedin](https://www.linkedin.com/in/hemanth-kumar-mj-24b50a256/) for finding and reporting this vulnerability.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) with another new desktop template.
+- Updated the website with a new template on [Bolt Templates](https://infinitode.netlify.app/bolt-templates) and added a blog post about the changes to [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC).
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with new projects for basic data exploration and manipulation.
+- Updated [Kode Magazine](https://kode-magazine.netlify.app/) with new articles and included new news.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) and merged changes from [#15](https://github.com/Infinitode/Python-Projects/pull/15/).
+- Updated all repositories to have sponsor links and [Ko-Fi](https://ko-fi.com/M4J423SRBM) links.
+- Closed [issue #12](https://github.com/Infinitode/Python-Projects/issues/12) in [Python Projects](https://github.com/Infinitode/Python-Projects). Reviewed and closed a pull request relating to the issue.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) with 2 new templates.
+- Improved some layouts on the [website](https://infinitode.netlify.app) and updated all OpenAPI pages with new layouts.
+- Updated the [documentation pages](https://infinitode-docs.gitbook.io/documentation) on GitBook.
+- Updated [LocalShare](https://github.com/johanbeytell1/LocalShare) to fix file chunking and sending.
+- Fixed and updated [LocalShare](https://github.com/johanbeytell1/LocalShare) with new updates, including better chunking and file verification to catch corrupted files.
+- Fixed ugly buttons on the website, updated the hero sections, and added 3 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates) to the website.
+- Updated [Kode Magazine](https://kode-magazine.netlify.app/) with new articles and news.
+- Updated and improved [OPEN-ARC's](https://github.com/Infinitode/OPEN-ARC) website with a completely new UI and even more project detail views.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with a new project.
+- Added a new [Bolt Template](https://infinitode.netlify.app/bolt-templates) for mobile to the website.
+- Updated the website [Experiments](https://infinitode.netlify.app/experiments), [Apps](https://infinitode.netlify.app/apps), and [Bolt Templates](https://infinitode.netlify.app/bolt-templates) pages with new donation cards.
+- Moved the [Material Library](https://github.com/Infinitode/Material-Library) from the website to an open-source repository on GitHub for easier access. It is still available on the website, but the download links now redirect to GitHub.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) with 2 new templates.
+- Created 2 new [Bolt Templates](https://infinitode.netlify.app/bolt-templates) for the website.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects).
+- Added [Brand Lab](https://infinitode.netlify.app/experiments/brand-lab/) to the website. A full web experiment for complete brand testing, using random logos, colors, fonts, and more.
+- Updated the [website](https://infinitode.netlify.app): fixed a bug in `pricing` and added a [new blog post](https://infinitode.netlify.app/blog) about the new experiments and templates.
+- Updated the [BlurJS](https://github.com/Infinitode/BlurJS) documentation on GitBook.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) to `1.7` ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation)), including dynamic `/blur` detection and more animation and interaction support.
+- Updated most repositories with Sponsor buttons to help support our team ([Ko-fi](https://ko-fi.com/M4J423SRBM)).
+- Fixed the broken `404` page on the [website](https://infinitode.netlify.app).
+- Added [Typesite Lab](https://infinitode.netlify.app/experiments/typesite-lab/) to the website to test font pairings on a live site!
+- Updated the [website](https://infinitode.netlify.app) with new sections, links, and more.
+- Added [Orb Studio](https://infinitode.netlify.app/experiments/orb-studio/) to the [Experiments](https://infinitode.netlify.app/experiments). Orb Studio is an interactive liquid audio visualizer with full customizability, running locally in the browser.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) on the website with 2 more free website templates.
+- Updated documentation of [LocalSiteMap](https://github.com/Infinitode/LocalSiteMap).
+- Updated [LocalSiteMap](https://github.com/Infinitode/LocalSiteMap) to [`2.0.0`](https://pypi.org/project/localsitemap/2.0.0/) following major bug fixes, performance improvements, and new features. It can also now include custom files, not just `.htm` or `.html`.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 1 new intermediate project and 2 beginner projects. Also added an installation guide for Python & VSCode and a new file explorer project by @Ericwasepic127.
+- Updated [Kode Magazine](https://kode-magazine.netlify.app/) with 2 new articles and more news posts.
+- Updated [FuncProfiler](https://github.com/Infinitode/FuncProfiler) to [`1.2.0`](https://pypi.org/project/funcprofiler/1.2.0/) with new performance improvements to improve exports and profiling, while reducing overhead.
+- Updated the website with 3 new tools on the [apps page](https://infinitode.netlify.app/apps): JSON formatter, Base64 encoder, and a case converter.
+- Updated [KeySynth Studio](https://infinitode.itch.io/keysynth-studio) to `v1.1`! This includes more performance improvements and even more customizability! Read the [v1.1 devlog](https://infinitode.itch.io/keysynth-studio/devlog/1567899/keysynth-studio-v11).
+- Updated the [website](https://infinitode.netlify.app) with new project links and fixed layout and animation performance issues.
+- Updated [FAQs](https://infinitode-docs.gitbook.io/faqs) with more common questions surrounding KeySynth Studio.
+- Updated [Kode Magazine](https://kode-magazine.netlify.app/) with new articles and news posts.
+- Updated the website with a [new blog post on KeySynth Studio](https://infinitode.netlify.app/blog/introducing-keysynth-studio/)! KeySynth Studio will be on sale from the 24th of June 2026 to the 6th of July 2026.
+- Released [KeySynth Studio](https://infinitode.itch.io/keysynth-studio)! KeySynth Studio is a premium piano Synthesia MIDI visualizer built for all creators. Find it on our [official itch.io page](https://infinitode.itch.io/).
+- Updated [LocalShare](https://github.com/johanbeytell1/LocalShare) with: new UI, staggered backoff for discovery mode, and bug fixes to avoid ID collisions.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 3 new beginner projects and solutions.
+- We launched [Kode Magazine](https://kode-magazine.netlify.app/), a tech and AI magazine with weekly updates.
+- We have released [Bioset CCCM (Chest Cancer Classification Model)](https://infinitode.netlify.app/experiments/bioset-cccm/): use it on [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Bioset-CCCM), or run it locally on the [experiments page](https://infinitode.netlify.app/experiments).
+- We have posted a new blog post: [Introducing Bioset CCCM — on-device chest cancer classification](https://infinitode.netlify.app/blog/introducing-bioset-cccm-on-device-chest-cancer-classification).
+- Huge [website](https://infinitode.netlify.app) UI update, including overall hero improvements, navigation, and footer improvements. Along with UI, we also worked on performance and responsiveness. We also finally implemented a "Sign in with Google" button.
+- Updated [CodeSafe](https://github.com/Infinitode/CodeSafe) to [`0.0.4`](https://pypi.org/project/codesafe/0.0.4/). CodeSafe is now much more optimized and efficient, with a `10x` speedup for safe evals, byte support, and faster encryption/decryption.
+- Updated [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation) and related documentation to feature the new models, and updated the API to allow access to the new models.
+- Updated [HF Space](https://huggingface.co/spaces/InfinitodeLTD/Dungen) for [Dungen](https://infinitode.netlify.app/experiments/dungen/), now features optimized generation and even more models.
+- Updated [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) on the web to `v1.4`. Now features 51 game name generation models that run locally.
+- Updated [Dungen](https://infinitode.netlify.app/experiments/dungen/) to version `1.4` on the web, featuring 51 games for generating names in its style.
+- Wrote a new blog post about [Dungen](https://infinitode.netlify.app/experiments/dungen/) locally in the browser, and why we moved to local browser-based software instead of traditional software.
+- Updated the website with the new [Dungen](https://infinitode.netlify.app/experiments/dungen/) and [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) local web experiments! Head on over to the [experiments page](https://infinitode.netlify.app/experiments) to test them locally.
+- Updated [Distributables](https://github.com/Infinitode/Distributables) with the new deprecated notices.
+- [`Synthdat`](https://github.com/Infinitode/Distributables/releases/tag/synthdat-1.1.0) is now deprecated. [Distributables](https://github.com/Infinitode/Distributables) and app pages will continue to function, but we are discontinuing maintenance and updates for them.
+- We have retired all locally based software versions of [Dungen](https://infinitode.netlify.app/experiments/dungen/), including [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) and [Dungen for Android](https://github.com/Infinitode/Distributables/releases/tag/dungen-android-1.0). New and updated web-based versions will replace these. This change will enable us to roll out updates more frequently and effectively to all our users.
+- Released [FastEDSR 2x](https://infinitode.netlify.app/experiments/fast-edsr/) for super-fast image upscaling tasks using AI. Use for free on the [website](https://infinitode.netlify.app) or on [Hugging Face](https://huggingface.co/spaces/InfinitodeLTD/FastEDSR).
+- Massive [website](https://infinitode.netlify.app) update: updated UI, layouts, and styles. We also completely overhauled forms and user dashboards, as well as pricing and other pages.
+- Updated the [blog](https://infinitode.netlify.app/blog) and created 2 new web apps on the [apps page](https://infinitode.netlify.app/apps).
+- Updated the [DeepDefend documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation/deepdefend-package-documentation) on GitBook.
+- Updated [DeepDefend](https://github.com/Infinitode/DeepDefend) to version [`0.1.5`](https://pypi.org/project/deepdefend/0.1.5/). The package now includes fixes for some defenses and even more attack and defense techniques.
+- Updated the [DupliPy package documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation/duplipy-package-documentation) on GitBook.
+- Updated [DupliPy](https://github.com/Infinitode/DupliPy) to version [`0.2.6`](https://pypi.org/project/duplipy/0.2.6/). DupliPy now includes CSV augmentation, data balancing, and new doc-lints and type hints for Python 3.10 and above.
+- Updated the [BlurJS documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation) on GitBook.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) to version `1.6` with major performance optimizations and expanded test coverage.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with difficulty ratings for every project and quick navigation to browse to each project.
+- Fixed a missing template in [Bolt Templates](https://infinitode.netlify.app/bolt-templates) and created a new 3D portfolio website template.
+- Published a [new blog post](https://infinitode.netlify.app/blog) about the [Video Compressor](https://infinitode.netlify.app/experiments/video-compressor/) experiment, detailing how it works behind the scenes.
+- Created a new [Video Compressor](https://infinitode.netlify.app/experiments/video-compressor/) experiment that compresses videos directly in your browser, without the need for uploads.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) with a new template for a news outlet website.
+- Added [Alloy](https://github.com/johanbeytell1/Alloy) to the experiments page on our website.
+- Updated the [FAQs](https://infinitode-docs.gitbook.io/faqs) on GitBook about [experiments](https://infinitode.netlify.app/experiments) use and model use.
+- Published [Alloy UI](https://github.com/johanbeytell1/Alloy) ([live site](https://alloyui.netlify.app/))! A fully open-source Tailwind V4 component and website layout design library.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) with a new template app for mobile and optimized images for the website.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) with a new space research agency website template using modern Tailwind V4! Download and use it for free on the website.
+- Updated [LocalShare](https://github.com/johanbeytell1/LocalShare)! LocalShare can now automatically detect local devices by IP address, enabling faster connections and easier sharing across browsers and devices. Additionally, LocalShare now allows users to accept or decline connections during handshakes, enhancing both reliability and privacy. You can access it at [local-share.netlify.app](https://local-share.netlify.app).
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 6 new projects.
+- New [blog post](https://infinitode.netlify.app/blog) about how AI music affects original artists and overwhelms streaming platforms.
+- Fixed blog link rendering on the [website](https://infinitode.netlify.app) for smaller screens.
+- Updated [PWLDS](https://github.com/Infinitode/PWLDS) to `v1.2` with 5 million new passwords.
+- Created a new [blog post](https://infinitode.netlify.app/blog) for [PyAutoPlot](https://github.com/Infinitode/PyAutoPlot) [`v1.1.0`](https://pypi.org/project/pyautoplot/1.1.0/).
+- Updated the [blog](https://infinitode.netlify.app/blog) articles display to be more accessible and cohesive.
+- Fixed a bug in our `Latest Changes` section of the [blog](https://infinitode.netlify.app/blog), where URLs weren't properly displayed.
+- Updated [PyAutoPlot](https://github.com/Infinitode/PyAutoPlot) to [`v1.1.0`](https://pypi.org/project/pyautoplot/1.1.0/), with new plots, cleanup functions, smarter date detection, and new export formats.
+- New [blog post about Colorlib](https://infinitode.netlify.app/blog).
+- Release of [Colorlib](https://infinitode.netlify.app/experiments/colorlib/), a massive library of colors and palettes for designers.
 - Updated the website with [Palette Snap](https://infinitode.netlify.app/apps/palette-snap), a web app that can extract up to 255 colors from images. Also created a new blog post.
-- Updated the documentation and created 2 new OpenAPI files for the added APIs.
-- Created 2 new APIs on the website (Closest Color and Hex To RGB), for colors.
-- Updated the website with a new Tic Tac Toe experiment, a total overhaul of our blog's UI, and a new blog post.
-- Updated `Hued` to v1.0.7 with 2 new functions in `analysis.py`: color blindness simulation (major color blindness types) and color quality checking.
-- Updated `OPEN-ARC's` official website to fix scrolling issues on mobile and touch devices.
-- Updated `ValX` documentation on GitBook to reflect the newest version changes and function references.
-- Updated `ValX` to version 0.2.6 to ignore text case when passing the `language` parameter. Also fixed a major bug where languages were missing, moved, shuffled, etc. in profanity lists (view issue: https://github.com/Infinitode/ValX/issues/4).
-- Released `Live Markdown`, a real-time markdown editor and previewer on [@Infinitode/Experiments](https://infinitode.netlify.app/experiments/), featuring GFM (GitHub Flavored Markdown) support.
+- Updated the [documentation](https://infinitode-docs.gitbook.io/documentation) and created 2 new OpenAPI files for the added APIs.
+- Created 2 new APIs on the [website](https://infinitode.netlify.app/api) — [Closest Color](https://infinitode-docs.gitbook.io/documentation/api-documentation/closest-color-api-documentation) and [Hex To RGB](https://infinitode-docs.gitbook.io/documentation/api-documentation/hex-to-rgb-api-documentation) — for colors.
+- Updated the website with a new [Tic Tac Toe](https://infinitode.netlify.app/experiments/tic-tac-toe/) experiment, a total overhaul of our blog's UI, and a new blog post.
+- Updated [Hued](https://github.com/Infinitode/Hued) to [`1.0.7`](https://pypi.org/project/hued/1.0.7/) with 2 new functions in `analysis.py`: color blindness simulation (major color blindness types) and color quality checking.
+- Updated [OPEN-ARC's](https://github.com/Infinitode/OPEN-ARC) official website to fix scrolling issues on mobile and touch devices.
+- Updated [ValX](https://github.com/Infinitode/ValX) documentation on GitBook to reflect the newest version changes and function references.
+- Updated [ValX](https://github.com/Infinitode/ValX) to version [`0.2.6`](https://pypi.org/project/valx/0.2.6/) to ignore text case when passing the `language` parameter. Also fixed a major bug where languages were missing, moved, shuffled, etc. in profanity lists (view [issue #4](https://github.com/Infinitode/ValX/issues/4)).
+- Released [Live Markdown](https://infinitode.netlify.app/experiments/live-markdown/), a real-time markdown editor and previewer on [@Infinitode/Experiments](https://infinitode.netlify.app/experiments/), featuring GFM (GitHub Flavored Markdown) support.
 - Release of `Locus`, a new model for GeoGuessr guessing based on 80k+ Google Street View images without textual descriptions.
-- Updated the AI models and datasets documentation on GitBook.
-- Created a `Tailwind Color Shader` that generates 50-950 full Tailwind color palettes based on a HEX color. Try it here: https://infinitode.netlify.app/apps/tailwind-color-shader.
-- Updated `CRSD` with ~2k new reviews using Gemini 3, Grok 4.1, and GPT 5.2.
-- Updated `NotionGrid` to `v2`. With massive improvements to the infinite note grid, grouping, project management, multi-window workflows, and much more.
-- Updated `Bolt Templates` on the website with 2 new templates and a new blog post.
-- Uploaded the new `OPEN-ARC` model to Hugging Face and updated the collections.
-- Updated `OPEN-ARC` with a new model and project.
-- New apps and a huge website update.
-- New experiments under the `/experiments` page on the website, including Dungen Dev in browser, along with other cool interactive demos.
-- Updated `LocalSitemap` to version `1.0.2`. This update includes removing the unnecessary dependencies for the package and making it lightweight.
-- Updated `Python Projects` with 3 new beginner projects.
-- Updated the FAQs with new content.
-- Updated `LocalShare` with an improved UI and subtle UI animations.
-- Updated `PyWebScrapr` to version `0.1.6`. Now uses multithreading for scraping tasks, includes rate limiting options, and progress printing.
-- Updated `FuncProfiler` to `v1.1.0`, with improvements to exports, new export formats, and more control over what is logged.
-- Updated `BlurJS` to `v1.5` and updated out-of-date documentation on [Gitbook](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation).
-- Uploaded new `OPEN-ARC` models to Hugging Face and updated our collections on Hugging Face.
-- Added collections to our Hugging Face for easier access.
-- New canvases for our music on Spotify.
-- Fixed bugs in some handlers of our new `Scikit-learn Model Updater` and improved documentation.
-- Updated and renamed our `Scikit-learn DecisionTreeClassifier Updater` to `Scikit-learn Model Updater` and added support for various models.
-- Updated `CodeSafe` to `v0.0.3`. Now supports blocking attribute access and changed `immediate_termination` to be `True` by default.
-- Updated `Python Projects` with new beginner and intermediate projects.
-- Updated `OPEN-ARC` with a new project and fixed Project 11 notebook score details.
-- Released `Kaos`, our name generation model for creatives. Access for free on Hugging Face Spaces: https://huggingface.co/spaces/InfinitodeLTD/KaosGen.
-- Updated `DeepDefend` to `v0.1.4`, with a new attack and a new defense function. We've also fixed some of the defense functions' logic.
-- Updated `LocalSitemap` to `v1.0.1`, with new progress prints using `show_progress`.
-- Fixed `review, sentiment` rows present as entries in our `CRS Dataset`, causing `null` values and errors in the csv file.
-- Updated `CRSD` on Hugging Face and GitHub with new GPT-5-Mini entries, bringing the total dataset size to `~8.2k` reviews.
-- Updated `DupliPy` to `v0.2.5`. This includes enhanced progress bars and new functions for image similarity detection, text analysis, and text similarity calculations.
-- New `Bioset` model launched on Hugging Face Spaces, `Bioset Brain Tumor MRI Detection Model`. Check it out here: https://huggingface.co/spaces/InfinitodeLTD/Bioset-Brain-Tumor-MRI-Detection.
-- Updates to the entire `Dungen` range.
-- Deprecated `Dungen for Android`, as it is no longer being maintained.
-- Updated `Dungen AI` with the 6 new AI models. View release at https://github.com/Infinitode/Distributables/releases/tag/dungen-ai-v1.3.0 or https://infinitode.netlify.app/apps/dungen-ai.
-- Updated `Dungen API` and `API Documentation` as well.
-- Updated `Dungen` Hugging Face space with 6 new AI models for generation.
-- Updated Dungen to `v1.3.0`, you can download and use the new version from here: https://github.com/Infinitode/Distributables/releases/tag/dungen-v1.3.0 or https://infinitode.netlify.app/apps/dungen.
-- Updated website styling.
-- Updated documentation for `authentication methods` for APIs.
-- Bug fixes for OpenAPI `yaml` files.
+- Updated the [AI models and datasets documentation](https://infinitode-docs.gitbook.io/documentation/ai-documentation) on GitBook.
+- Created a [Tailwind Color Shader](https://infinitode.netlify.app/apps/tailwind-color-shader) that generates 50-950 full Tailwind color palettes based on a HEX color.
+- Updated [CRSD](https://github.com/Infinitode/CRSD) with ~2k new reviews using Gemini 3, Grok 4.1, and GPT 5.2.
+- Updated [NotionGrid](https://notiongrid.netlify.app/) to `v2`. With massive improvements to the infinite note grid, grouping, project management, multi-window workflows, and much more.
+- Updated [Bolt Templates](https://infinitode.netlify.app/bolt-templates) on the website with 2 new templates and a new blog post.
+- Uploaded the new [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) model to Hugging Face and updated the collections.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with a new model and project.
+- New [apps](https://infinitode.netlify.app/apps) and a huge website update.
+- New experiments on the [experiments page](https://infinitode.netlify.app/experiments), including [Dungen Dev](https://infinitode.netlify.app/experiments/dungen-dev/) in the browser, along with other cool interactive demos.
+- Updated [LocalSiteMap](https://github.com/Infinitode/LocalSiteMap) to version [`1.0.2`](https://pypi.org/project/localsitemap/1.0.2/). This update includes removing the unnecessary dependencies for the package and making it lightweight.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 3 new beginner projects.
+- Updated the [FAQs](https://infinitode-docs.gitbook.io/faqs) with new content.
+- Updated [LocalShare](https://github.com/johanbeytell1/LocalShare) with an improved UI and subtle UI animations.
+- Updated [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr) to version [`0.1.6`](https://pypi.org/project/pywebscrapr/0.1.6/). Now uses multithreading for scraping tasks, includes rate limiting options, and progress printing.
+- Updated [FuncProfiler](https://github.com/Infinitode/FuncProfiler) to [`1.1.0`](https://pypi.org/project/funcprofiler/1.1.0/), with improvements to exports, new export formats, and more control over what is logged.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) to `v1.5` and updated out-of-date documentation on [Gitbook](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation).
+- Uploaded new [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) models to Hugging Face and updated our collections on Hugging Face.
+- Added collections to our [Hugging Face](https://huggingface.co/InfinitodeLTD) for easier access.
+- New canvases for our music on [Spotify](https://open.spotify.com/artist/6NvSE4nOwHy4Cf7Rzb2mVv).
+- Fixed bugs in some handlers of our new [Scikit-learn Model Updater](https://github.com/Infinitode/Scikit-learn-Model-Updater) and improved documentation.
+- Updated and renamed our Scikit-learn `DecisionTreeClassifier` Updater to [Scikit-learn Model Updater](https://github.com/Infinitode/Scikit-learn-Model-Updater) and added support for various models.
+- Updated [CodeSafe](https://github.com/Infinitode/CodeSafe) to [`0.0.3`](https://pypi.org/project/codesafe/0.0.3/). Now supports blocking attribute access and changed `immediate_termination` to be `True` by default.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with new beginner and intermediate projects.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with a new project and fixed Project 11 notebook score details.
+- Released [Kaos](https://huggingface.co/spaces/InfinitodeLTD/KaosGen), our name generation model for creatives. Access it for free on Hugging Face Spaces.
+- Updated [DeepDefend](https://github.com/Infinitode/DeepDefend) to [`0.1.4`](https://pypi.org/project/deepdefend/0.1.4/), with a new attack and a new defense function. We've also fixed some of the defense functions' logic.
+- Updated [LocalSiteMap](https://github.com/Infinitode/LocalSiteMap) to [`1.0.1`](https://pypi.org/project/localsitemap/1.0.1/), with new progress prints using `show_progress`.
+- Fixed `review, sentiment` rows present as entries in our [`CRS Dataset`](https://huggingface.co/datasets/InfinitodeLTD/CRSD), causing `null` values and errors in the CSV file.
+- Updated [CRSD](https://github.com/Infinitode/CRSD) on Hugging Face and GitHub with new GPT-5-Mini entries, bringing the total dataset size to `~8.2k` reviews.
+- Updated [DupliPy](https://github.com/Infinitode/DupliPy) to [`0.2.5`](https://pypi.org/project/duplipy/0.2.5/). This includes enhanced progress bars and new functions for image similarity detection, text analysis, and text similarity calculations.
+- New [Bioset Brain Tumor MRI Detection Model](https://huggingface.co/spaces/InfinitodeLTD/Bioset-Brain-Tumor-MRI-Detection) launched on Hugging Face Spaces.
+- Updates to the entire [Dungen](https://infinitode.netlify.app/experiments/dungen/) range.
+- Deprecated [Dungen for Android](https://github.com/Infinitode/Distributables/releases/tag/dungen-android-1.0), as it is no longer being maintained.
+- Updated [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) with the 6 new AI models. View the [Dungen AI v1.3.0 release](https://github.com/Infinitode/Distributables/releases/tag/dungen-ai-v1.3.0) or the [web app](https://infinitode.netlify.app/apps/dungen-ai).
+- Updated [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation) and [API Documentation](https://infinitode-docs.gitbook.io/documentation/api-documentation) as well.
+- Updated [Dungen](https://infinitode.netlify.app/experiments/dungen/) Hugging Face space with 6 new AI models for generation.
+- Updated [Dungen](https://infinitode.netlify.app/experiments/dungen/) to `v1.3.0` — download it from the [Distributables release](https://github.com/Infinitode/Distributables/releases/tag/dungen-v1.3.0).
+- Updated [website](https://infinitode.netlify.app) styling.
+- Updated the [documentation on API authentication and keeping API keys safe](https://infinitode-docs.gitbook.io/documentation/api-documentation/keeping-your-api-key-safe).
+- Bug fixes for the OpenAPI `YAML` files.
 - Created new auth methods for APIs, and added OpenAPI compatibility with downloadable configuration files for Postman, Swagger, Insomnia, and other software.
-- Created a `Reaction Time Tester` app to help you test your reaction time on the go. Check it out here: https://infinitode.netlify.app/apps/reaction-time-tester.
-- Created a fun `Typing Speed Test` app for testing your typing speed and accuracy. View over here: https://infinitode.netlify.app/apps/typing-speed-test.
-- Created a `Password Generator` web app. Use here: https://infinitode.netlify.app/apps/password-generator.
-- Updated `Python Projects` with 3 new `Beginner` projects and 1 `Intermediate` project.
-- Updated Synthdat to version `1.1.0`, a new model, and major UI improvements. Visit the [app page](https://infinitode.netlify.app/apps/synthdat), or view our `Distributables` release for this [version](https://github.com/Infinitode/Distributables/releases/tag/synthdat-1.1.0).
-- Updated `Distributables` with the new `Synthdat` release and screenshots for all apps.
-- Updated `ValX` to version `0.2.5`, now supporting custom wordlists and files for profanity detection and removal.
-- Updated `Python Projects` with a new beginner project.
-- Updated `BlurJS` with performance improvements and more usage examples.
-- Created `Bolt Templates` on our website. Pure `HTML`, `CSS`, and `JS` websites, apps, and landing pages that are free to use and download. Visit it here: https://infinitode.netlify.app/bolt-templates.
-- Updated `OPEN-ARC` with a new project and fixed some issues in the README file and Project 10 files.
-- Huge website styles update, and content updates, including a new blog post. Read it here: https://infinitode.netlify.app/blog/open-source-the-good-the-bad-and-the-ugly.
-- Updated `PyAutoPlot` to version 1.0.2, which includes bug fixes, performance enhancements, and code cleanup.
-- `NotionGrid` is now available to use for free! Our infinite note-taking app for developers is available for use at the following URL: https://notiongrid.netlify.app.
-- Created a live web UI for OPEN-ARC. Visit it here: https://open-arc.netlify.app.
-- Updated OPEN-ARC's `README.md` to be more straightforward to understand.
-- Updated the website's styling. View the live site here: https://infinitode.netlify.app.
-- Created new APIs and overhauled the documentation, including cURL quickstart examples for each API. View the docs: https://infinitode-docs.gitbook.io/documentation.
-- Added all models from OPEN-ARC to Hugging Face for easier access. View them here: https://huggingface.co/InfinitodeLTD.
+- Created a [Reaction Time Tester](https://infinitode.netlify.app/apps/reaction-time-tester) app to help you test your reaction time on the go.
+- Created a fun [Typing Speed Test](https://infinitode.netlify.app/apps/typing-speed-test) app for testing your typing speed and accuracy.
+- Created a [Password Generator](https://infinitode.netlify.app/apps/password-generator) web app.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 3 new `Beginner` projects and 1 `Intermediate` project.
+- Updated [Synthdat](https://infinitode.netlify.app/apps/synthdat) to version [`1.1.0`](https://github.com/Infinitode/Distributables/releases/tag/synthdat-1.1.0), with a new model and major UI improvements.
+- Updated [Distributables](https://github.com/Infinitode/Distributables) with the new [Synthdat](https://github.com/Infinitode/Distributables/releases/tag/synthdat-1.1.0) release and screenshots for all apps.
+- Updated [ValX](https://github.com/Infinitode/ValX) to version [`0.2.5`](https://pypi.org/project/valx/0.2.5/), now supporting custom wordlists and files for profanity detection and removal.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with a new beginner project.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) with performance improvements and more usage examples ([docs](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation)).
+- Created [Bolt Templates](https://infinitode.netlify.app/bolt-templates) on our website: pure `HTML`, `CSS`, and `JS` websites, apps, and landing pages that are free to use and download.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with a new project and fixed some issues in the README file and Project 10 files.
+- Huge website styles update, and content updates, including a new blog post: [Open source, the good, the bad, and the ugly](https://infinitode.netlify.app/blog/open-source-the-good-the-bad-and-the-ugly).
+- Updated [PyAutoPlot](https://github.com/Infinitode/PyAutoPlot) to version `1.0.2`, which includes bug fixes, performance enhancements, and code cleanup.
+- [NotionGrid](https://notiongrid.netlify.app/), our infinite note-taking app for developers, is now available to use for free!
+- Created a live web UI for [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) at [open-arc.netlify.app](https://open-arc.netlify.app/).
+- Updated the [OPEN-ARC README.md](https://github.com/Infinitode/OPEN-ARC) to be more straightforward to understand.
+- Updated the website's styling. View the [live site](https://infinitode.netlify.app).
+- Created new APIs and overhauled the [documentation](https://infinitode-docs.gitbook.io/documentation), including cURL quickstart examples for each API.
+- Added all models from [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) to [Hugging Face](https://huggingface.co/InfinitodeLTD) for easier access.
 - Uploaded an OPEN-ARC model (TWNGM) to [Hugging Face](https://huggingface.co/InfinitodeLTD/TWNGM-OPEN-ARC).
 - Updated and revamped the documentation on [GitBook](https://infinitode-docs.gitbook.io/documentation).
-- Updated `Python Projects` with a new project.
-- First open-source release of [LocalShare](https://github.com/Infinitode/LocalShare). Visit the live demo here: https://local-share.netlify.app/
-- Updated `Hued` to version `1.0.6`: New `export_palette` function to export palette data to CSV, TXT, and JSON, and a function to generate gradients under `ColorPalette`.
-- Updated `PWLDS` with 5 million new passwords. It now contains over 10 million unique passwords with strength level classes.
-- Updated `Python Projects` with 2 new beginner projects.
-- Updated `Dungen Dev` to version 1.2, now more context-aware. The model benefits from higher temperature values for more creative results. Use it on our API, [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Dungen-Dev), or on our website: https://infinitode.netlify.app/ai.
-- `LocalSiteMap` first commit! It is an open-source Python package for local sitemap generation.
-- New web apps: https://infinitode.netlify.app/apps and AI demos: https://infinitode.netlify.app/ai
-- First official release of Scriptify! Scriptify is an AI-powered writing tool with real-time audio transcription powered by OpenAI's Whisper models. Learn more here: https://github.com/Infinitode/Scriptify.
-- Updated `Distributables` README for clearer information to users regarding our releases and signing of releases.
-- Updated `Dungen Dev` to version `1.1`! Dungen Dev 1.1 can handle more complex prompts and works well, especially at higher temperatures (0.7 <). This new version of Dungen Dev is available through our API and for free on Hugging Face Spaces: https://huggingface.co/spaces/InfinitodeLTD/Dungen-Dev
-- CRSD is now available on GitHub as well. Learn more here: https://github.com/Infinitode/CRSD
-- Created the CRS Dataset on Huggingface. Learn more here: https://huggingface.co/datasets/InfinitodeLTD/CRSD
-- Updated `DeepDefend` with 5 new functions under `defenses`.
-- Updated `PyWebScrapr` to version `0.1.5` and added a `JSON` export format. Also added support for child link following when scraping text and image content from links.
-- Updated `FuncProfiler` with 2 new export formats.
-- Updated `Python Projects` with 2 new beginner projects.
-- Created an API for `MycoNom`. View the documentation from here: https://infinitode-docs.gitbook.io/documentation/api-documentation/myconom-api-documentation.
-- Created a new `Huggingface space`, MycoNom (an AI model for mushroom edibility classification). Use it from here: https://huggingface.co/spaces/InfinitodeLTD/MycoNom.
-- Updated `OPEN-ARC` with a new project.
-- Updated the website with the first `material library` release. You can find it here: https://infinitode.netlify.app/resources/material-library.
-- Updated `Python Projects` with 2 new projects. One beginner project and the first intermediate project.
-- Release of `Dungen Dev API` for custom integrations of Dungen Dev.
-- Release of `PyAutoPlot`, an open-source Python plotting library that automatically plots your dataset using `matplotlib`. You can view the docs from here: https://infinitode-docs.gitbook.io/documentation/package-documentation/pyautoplot-package-documentation
-- `Dungen AI` updated to version `1.2.0` with 9 new models, performance improvements, and UI updates. Download binaries from here: https://github.com/Infinitode/Distributables/releases/tag/dungen-ai-1.2.0
-- New models are now available through the `Dungen API`.
-- 9 new models for `Dungen AI` on Huggingface spaces: https://huggingface.co/spaces/InfinitodeLTD/Dungen
-- New mobile navigation bar on the website, with some style improvements: https://infinitode.netlify.app
-- Password quiz `game` on the website! Head over to: https://infinitode.netlify.app/apps/password-game/ to start playing.
-- Updated `BlurJS` to version `1.3` with added support for multiple animations and new timing parameters to adjust easing. View more in the docs: https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation
-- Updated `DupliPy` to `0.2.4` with 3 new replication functions, and a post-formatting function in `duplipy.formatting`.
-- First official release of `Dungen Dev`, a new AI model for name generation based on a prompt.
-- Updated the `website's styles` with a new navigation bar and improved styles for mobile devices.
-- Updated `Python Projects` with a new project.
-- Official first release of `Dungen for Android` available from here: https://github.com/Infinitode/Distributables/releases/tag/dungen-android-1.0 or the [website](https://infinitode.netlify.app/apps/dungen-android/).
-- Updated `Python Projects` with new projects.
-- Update `Dungen` to version `1.2.0`, available from the website, or from here: https://github.com/Infinitode/Distributables/releases/tag/dungen-1.2.0
-- Update to `PyWebScrapr`, which automatically removes duplicates when scraping text.
-- Updated `OPEN-ARC` with a new project and improvements to the previous notebook and `README` files.
-- Updated `PyWebScrapr` documentation on GitBook.
-- Created an open-source `scikit-learn` model updater for older `DecisionTreeClassifier` models. Learn more here: https://github.com/Infinitode/Scikit-learn-DecisionTreeClassifier-Updater
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with a new project.
+- First open-source release of [LocalShare](https://github.com/johanbeytell1/LocalShare). Visit the [live demo](https://local-share.netlify.app/).
+- Updated [Hued](https://github.com/Infinitode/Hued) to version [`1.0.6`](https://pypi.org/project/hued/1.0.6/): New `export_palette` function to export palette data to CSV, TXT, and JSON, and a function to generate gradients under `ColorPalette`.
+- Updated [PWLDS](https://github.com/Infinitode/PWLDS) with 5 million new passwords. It now contains over 10 million unique passwords with strength level classes.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 2 new beginner projects.
+- Updated [Dungen Dev](https://infinitode.netlify.app/experiments/dungen-dev/) to version 1.2, now more context-aware. The model benefits from higher temperature values for more creative results. Use it on our API, [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Dungen-Dev), or on our [website](https://infinitode.netlify.app/ai).
+- [LocalSiteMap](https://github.com/Infinitode/LocalSiteMap) first commit! It is an open-source Python package for local sitemap generation.
+- New [web apps](https://infinitode.netlify.app/apps) and [AI demos](https://infinitode.netlify.app/ai).
+- First official release of [Scriptify](https://github.com/Infinitode/Scriptify)! Scriptify is an AI-powered writing tool with real-time audio transcription powered by OpenAI's Whisper models.
+- Updated [Distributables](https://github.com/Infinitode/Distributables) README for clearer information to users regarding our releases and signing of releases.
+- Updated [Dungen Dev](https://infinitode.netlify.app/experiments/dungen-dev/) to version `1.1`! Dungen Dev 1.1 can handle more complex prompts and works well, especially at higher temperatures (0.7 <). This new version of Dungen Dev is available through our API and for free on [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Dungen-Dev).
+- [CRSD](https://github.com/Infinitode/CRSD) is now available on GitHub as well.
+- Created the [CRS Dataset](https://huggingface.co/datasets/InfinitodeLTD/CRSD) on Hugging Face.
+- Updated [DeepDefend](https://github.com/Infinitode/DeepDefend) with 5 new functions under `defenses`.
+- Updated [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr) to version [`0.1.5`](https://pypi.org/project/pywebscrapr/0.1.5/) and added a `JSON` export format. Also added support for child link following when scraping text and image content from links.
+- Updated [FuncProfiler](https://github.com/Infinitode/FuncProfiler) with 2 new export formats.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 2 new beginner projects.
+- Created an API for [MycoNom](https://huggingface.co/spaces/InfinitodeLTD/MycoNom). Read the [MycoNom API documentation](https://infinitode-docs.gitbook.io/documentation/api-documentation/myconom-api-documentation).
+- Created a new [Hugging Face Space](https://huggingface.co/spaces/InfinitodeLTD/MycoNom), MycoNom, an AI model for mushroom edibility classification.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with a new project.
+- Updated the website with the first [Material Library](https://github.com/Infinitode/Material-Library) release, available on the [resources page](https://infinitode.netlify.app/resources/material-library).
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with 2 new projects. One beginner project and the first intermediate project.
+- Release of the [Dungen Dev API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-dev-api-documentation) for custom integrations of Dungen Dev.
+- Release of [PyAutoPlot](https://github.com/Infinitode/PyAutoPlot), an open-source Python plotting library that automatically plots your dataset using `matplotlib`. View the [PyAutoPlot documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation/pyautoplot-package-documentation).
+- [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) updated to version `1.2.0` with 9 new models, performance improvements, and UI updates. Download binaries from the [Dungen AI 1.2.0 release](https://github.com/Infinitode/Distributables/releases/tag/dungen-ai-1.2.0).
+- New models are now available through the [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation).
+- 9 new models for [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) on [Hugging Face Spaces](https://huggingface.co/spaces/InfinitodeLTD/Dungen).
+- New mobile navigation bar on the [website](https://infinitode.netlify.app), with some style improvements.
+- Password quiz game on the website! Head over to the [password game](https://infinitode.netlify.app/apps/password-game/) to start playing.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) to version `1.3` with added support for multiple animations and new timing parameters to adjust easing. View the [BlurJS documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation/blurjs-package-documentation).
+- Updated [DupliPy](https://github.com/Infinitode/DupliPy) to [`0.2.4`](https://pypi.org/project/duplipy/0.2.4/) with 3 new replication functions, and a post-formatting function in `duplipy.formatting`.
+- First official release of [Dungen Dev](https://infinitode.netlify.app/experiments/dungen-dev/), a new AI model for name generation based on a prompt.
+- Updated the [website's styles](https://infinitode.netlify.app) with a new navigation bar and improved styles for mobile devices.
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with a new project.
+- Official first release of [Dungen for Android](https://github.com/Infinitode/Distributables/releases/tag/dungen-android-1.0), available from the [website app page](https://infinitode.netlify.app/apps/dungen-android/).
+- Updated [Python Projects](https://github.com/Infinitode/Python-Projects) with new projects.
+- Update [Dungen](https://infinitode.netlify.app/experiments/dungen/) to version `1.2.0`, available from the [website](https://infinitode.netlify.app/apps/dungen) or the [Dungen 1.2.0 release](https://github.com/Infinitode/Distributables/releases/tag/dungen-1.2.0).
+- Update to [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr), which automatically removes duplicates when scraping text.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with a new project and improvements to the previous notebook and `README` files.
+- Updated [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr) documentation on GitBook.
+- Created an open-source [scikit-learn model updater](https://github.com/Infinitode/Scikit-learn-Model-Updater) for older `DecisionTreeClassifier` models.
 - Created `requirements.txt` files for some repositories.
-- Created `issue templates` and `contributing guidelines` for all open-source repositories.
-- Updated `CodeSafe` to handle errors and remove unnecessary prints. Related to this pull request: https://github.com/Infinitode/CodeSafe/pull/1.
-- Updated `Dungen AI` to version `1.1.0`. Now includes new models and improved compatibility, and performance (removed old dependencies).
-- Updated `Dungen's API` with the new models for name generation.
-- New [web app](https://infinitode.netlify.app/apps/english-vocabulary-quiz/), and updates on [Bits](https://infinitode.netlify.app/blog), and the website.
-- Updated `Dungen` on Huggingface (API changes coming soon), with `11 new models` to generate names!
-- Updated `valx` with forward and backward compatibility fixes with `scikit-learn` versions older or later than `1.3.0`.
-- There is a new `Dungen AI` app where you can run Dungen models locally for free.
-- Updated `Dungen` and the `Dungen API` with 3 new name generation models.
-- Updated the documentation to include links to `functions` under packages for easier access.
-- Updated `Hued` to version `1.0.5` with support for `CIE 1931 XYZ` in `conversions.py`.
-- New open-source `Python Projects` repository. It contains Python projects, steps, tips, and working code solutions.
-- 3 new `AI spaces` on our Huggingface.
-- Created a new project in `OPEN-ARC` and fixed broken links in `README.md` and `LEADERBOARD.md`.
-- Created a new API, `random-facts-generator`, that returns random facts and their sources.
-- Created a new model for our `Dungen AI` on Huggingface and the API.
-- Updated Dungen to version `1.1.0`, now supports 5+ games, with improved generation.
-- Updated the security of all APIs and API resources.
-- Updated `ValX` to version `0.2.3`. New detection patterns allow more granular control over sensitive information detection and removal.
-- Updated `PyWebScrapr README.md`. It now displays the PYPI Downloads badge correctly.
-- Updated `package documentation` to include changelogs.
-- Updated `API documentation` to now include changelogs.
-- Updated `OPEN-ARC` with `Open in Kaggle` and `Open in Colab` buttons.
-- Updated `Dungen API`, and HunggingFace space, with a new model for name generation.
-- Updated `ValX`, with changes to notify users of the bug when using `numpy 2.x`. We also updated the `detect_profanity` function to show more information while eliminating unnecessary printing.
-- Updated `Hued` with 500+ new color names in `colors.py`.
-- Updated `DeepDefend's README.md` file to be more informative.
-- Created `Hued`, an open-source Python library for color conversions, analysis, and palettes.
-- Created `CodeSafe`, an open-source Python library for `safe_eval`, and code obfuscation.
-- Updated `PyWebScrapr's` project description on PYPI.
-- Created `FuncProfiler`, an open-source Python library for analyzing and detecting bottlenecks in code.
-- Updated `DupliPy's` project description on PYPI.
-- Created `Dungen API` for AI name generation.
-- Created `PWLDS`, an open-source dataset of passwords and their associated strength levels. Also available on HuggingFace.
-- Created `Distributables`, a repo where you can find the redistributables for our free software.
-- Updated `BlurJS` to include new interactivity triggers.
+- Created issue templates and contributing guidelines for all open-source repositories.
+- Updated [CodeSafe](https://github.com/Infinitode/CodeSafe) to handle errors and remove unnecessary prints. Related to [CodeSafe PR #1](https://github.com/Infinitode/CodeSafe/pull/1).
+- Updated [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) to version `1.1.0`. Now includes new models and improved compatibility, and performance (removed old dependencies).
+- Updated the [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation) with the new models for name generation.
+- New [web app](https://infinitode.netlify.app/apps/english-vocabulary-quiz/), plus updates on the [blog](https://infinitode.netlify.app/blog) and the website.
+- Updated [Dungen](https://huggingface.co/spaces/InfinitodeLTD/Dungen) on Hugging Face (API changes coming soon), with 11 new models to generate names!
+- Updated [ValX](https://github.com/Infinitode/ValX) with forward and backward compatibility fixes with `scikit-learn` versions older or later than `1.3.0`.
+- There is a new [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) app where you can run Dungen models locally for free.
+- Updated [Dungen](https://infinitode.netlify.app/experiments/dungen/) and the [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation) with 3 new name generation models.
+- Updated the [documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation) to include links to `functions` under packages for easier access.
+- Updated [Hued](https://github.com/Infinitode/Hued) to version [`1.0.5`](https://pypi.org/project/hued/1.0.5/) with support for `CIE 1931 XYZ` in `conversions.py`.
+- New open-source [Python Projects](https://github.com/Infinitode/Python-Projects) repository. It contains Python projects, steps, tips, and working code solutions.
+- 3 new AI Spaces on our [Hugging Face](https://huggingface.co/InfinitodeLTD).
+- Created a new project in [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) and fixed broken links in `README.md` and `LEADERBOARD.md`.
+- Created a new API, [`random-facts-generator`](https://infinitode-docs.gitbook.io/documentation/api-documentation/random-facts-generator-api-documentation), that returns random facts and their sources.
+- Created a new model for our [Dungen AI](https://infinitode.netlify.app/experiments/dungen-ai/) on [Hugging Face](https://huggingface.co/spaces/InfinitodeLTD/Dungen) and the API.
+- Updated [Dungen](https://infinitode.netlify.app/experiments/dungen/) to version `1.1.0`, now supports 5+ games, with improved generation.
+- Updated the security of all APIs and API resources, and the [API documentation](https://infinitode-docs.gitbook.io/documentation/api-documentation/keeping-your-api-key-safe).
+- Updated [ValX](https://github.com/Infinitode/ValX) to version [`0.2.3`](https://pypi.org/project/valx/0.2.3/). New detection patterns allow more granular control over sensitive information detection and removal.
+- Updated the [PyWebScrapr README.md](https://github.com/Infinitode/PyWebScrapr). It now displays the PyPI downloads badge correctly.
+- Updated the [package documentation](https://infinitode-docs.gitbook.io/documentation/package-documentation) to include changelogs.
+- Updated [API documentation](https://infinitode-docs.gitbook.io/documentation/api-documentation) to now include changelogs.
+- Updated [OPEN-ARC](https://github.com/Infinitode/OPEN-ARC) with `Open in Kaggle` and `Open in Colab` buttons.
+- Updated the [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation) and [Hugging Face Space](https://huggingface.co/spaces/InfinitodeLTD/Dungen) with a new model for name generation.
+- Updated [ValX](https://github.com/Infinitode/ValX), with changes to notify users of the bug when using `numpy 2.x`. We also updated the `detect_profanity` function to show more information while eliminating unnecessary printing.
+- Updated [Hued](https://github.com/Infinitode/Hued) with 500+ new color names in `colors.py`.
+- Updated [DeepDefend's README.md](https://github.com/Infinitode/DeepDefend) file to be more informative.
+- Created [Hued](https://github.com/Infinitode/Hued), an open-source Python library for color conversions, analysis, and palettes.
+- Created [CodeSafe](https://github.com/Infinitode/CodeSafe), an open-source Python library for `safe_eval`, and code obfuscation.
+- Updated [PyWebScrapr](https://github.com/Infinitode/PyWebScrapr)'s project description on [PyPI](https://pypi.org/project/pywebscrapr/).
+- Created [FuncProfiler](https://github.com/Infinitode/FuncProfiler), an open-source Python library for analyzing and detecting bottlenecks in code.
+- Updated [DupliPy](https://github.com/Infinitode/DupliPy)'s project description on [PyPI](https://pypi.org/project/duplipy/).
+- Created [Dungen API](https://infinitode-docs.gitbook.io/documentation/api-documentation/dungen-api-documentation) for AI name generation.
+- Created [PWLDS](https://github.com/Infinitode/PWLDS), an open-source dataset of passwords and their associated strength levels. Also available on [Hugging Face](https://huggingface.co/InfinitodeLTD).
+- Created [Distributables](https://github.com/Infinitode/Distributables), a repo where you can find the redistributables for our free software.
+- Updated [BlurJS](https://github.com/Infinitode/BlurJS) to include new interactivity triggers.
 
 > [!NOTE]
 > **Latest changes** only cover a few of the changes we have made; for a more comprehensive update, view our social channels, blog, and website for updates.
