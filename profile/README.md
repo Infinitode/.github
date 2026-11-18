@@ -30,6 +30,7 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- Updated `BlurJS` to `v1.8`, supporting live editing, keyframe cleanup, animation fixes, styling fixes, interactive fixes, support for reduced motion, and more browser tests. Also updated the BlurJS GitBook documentation.
 - Updated `Bolt Templates` to include 2 new templates.
 - Updated `DupliPy` to `v0.2.7` and updated GitBook documentation to detail the latest version changes, including speed-ups for NLTK downloads and fixed similarity bugs.
 - Updated `LocalShare` to `v2.2`, implementing speed-ups for file transfers and LAN Direct support for even faster transfers between local devices on the same network.
