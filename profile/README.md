@@ -30,6 +30,10 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- Updated `Hued` to `v1.1.0`.
+- Updated `PyAutoPlot` to `v1.1.1`. This version includes fixes for data handling, partial themes, and plotting for empty columns and header-only CSVs.
+- Updated `LocalSiteMap` to `v2.1.0`. This includes a ton of bug fixes and new CLI features with glob exclusion support.
+- Updated `ValX` to `v0.2.7`. Improved redactions and profanity filtering, fixed Finnish handling, and the filtering models load on first use, not on first import.
 - Updated `FuncProfiler` to `v1.3.0`. This version includes many bug fixes and improvements to profiling and exports. Also updated the GitBook documentation for FuncProfiler.
 - Updated `BlurJS` to `v1.8`, supporting live editing, keyframe cleanup, animation fixes, styling fixes, interactive fixes, support for reduced motion, and more browser tests. Also updated the BlurJS GitBook documentation.
 - Updated `Bolt Templates` to include 2 new templates.
