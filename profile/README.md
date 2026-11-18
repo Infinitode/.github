@@ -30,6 +30,8 @@ Welcome to Infinitode, a cutting-edge small technology company dedicated to deve
 > Upcoming changes are planned changes. We can remove, cancel, or stage these changes for later.
 
 ### Latest changes
+- Updated `Bolt Templates` to include 2 new templates.
+- Updated `DupliPy` to `v0.2.7` and updated GitBook documentation to detail the latest version changes, including speed-ups for NLTK downloads and fixed similarity bugs.
 - Updated `LocalShare` to `v2.2`, implementing speed-ups for file transfers and LAN Direct support for even faster transfers between local devices on the same network.
 - Updated `TailClass` to `v1.0.2`, fixing a few security issues in earlier versions of the package.
 - Updated the website with a new experiment: `Prompt Foundry`. Prompt Foundry is a collection of prompts for LLMs that can be used to build various applications and software. It also includes a small randomizer that helps turn generic prompts into specific LLM instructions.
